@@ -23,16 +23,12 @@ const createWindow = (): void => {
   const mainWindow = new BrowserWindow({
     height: 600,
     width: 800,
+    icon: './public/logo-mini.png',
     // webPreferences: {
     //   preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
     // },
   });
 
-  // and load the index.html of the app.
-  // mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
-
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools();
   mainWindow.loadURL("http://localhost:5173");
 };
 

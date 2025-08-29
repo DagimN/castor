@@ -2,8 +2,7 @@
   "name": "castor",
   "productName": "castor",
   "version": "1.0.0",
-  "description": "My Electron application description",
-  "main": ".webpack/main",
+  "description": "Castor is a tool that will be used for managing, organizing and displaying different files to a projector screen that will separate the control panel and the projector screen, so that the projector screen will always have a clean flow.",
   "type": "module",
   "scripts": {
     "package": "electron-forge package",
@@ -16,10 +15,26 @@
     "build": "vite build && electron-builder",
     "react:build": "vite build"
   },
-  "keywords": [],
+  "keywords": [
+    "Projector",
+    "Presentation Management",
+    "Castor",
+    "Control Panel"
+  ],
   "author": {
     "name": "Dagmawi Nebiat",
     "email": "dagmnebiat@gmail.com"
+  },
+  "build": {
+    "appId": "com.castor.app",
+    "productName": "Castor",
+    "icon": "public/logo.ico",
+    "mac": {
+      "icon": "public/logo.icns"
+    },
+    "linux": {
+      "icon": "public/logo.png"
+    }
   },
   "license": "MIT",
   "devDependencies": {
