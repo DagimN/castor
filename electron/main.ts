@@ -32,7 +32,8 @@ const createWindow = (): void => {
   // mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
+  mainWindow.loadURL("http://localhost:5173");
 };
 
 // This method will be called when Electron has finished
