@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
-    "target": "ES6",
+    "target": "ESNext",
     "allowJs": true,
-    "module": "commonjs",
+    "module": "ESNext",
+    "jsx": "react-jsx",
     "skipLibCheck": true,
     "esModuleInterop": true,
     "noImplicitAny": true,
     "sourceMap": true,
+    "strict": true,
     "baseUrl": ".",
     "outDir": "dist",
     "moduleResolution": "node",
@@ -15,5 +17,5 @@
       "*": ["node_modules/*"]
     }
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "electron"]
 }
