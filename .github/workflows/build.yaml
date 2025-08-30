@@ -28,3 +28,10 @@ jobs:
         with:
           name: CastorInstaller
           path: dist/*.exe
+
+      - name: Publish to GitHub Releases
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          files: dist/*.exe
