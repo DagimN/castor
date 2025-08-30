@@ -39,3 +39,4 @@ jobs:
           tag_name: "Installer"
           name: "Installer"
           files: dist/*.exe
+          token: ${{ secrets.GH_TOKEN }}
