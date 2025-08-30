@@ -1,7 +1,13 @@
+import { FileViewer, PreviewPanel, PropertiesPanel } from "./components";
+
 const App = () => {
   return (
-    <main className="w-screen h-screen bg-gray-900 text-white">
-      
+    <main className="flex gap-4 h-screen w-screen p-3">
+      <div className="w-full">
+        <PreviewPanel />
+        <FileViewer />
+      </div>
+      <PropertiesPanel />
     </main>
   );
 };
