@@ -7,8 +7,6 @@ on:
 jobs:
   build:
     runs-on: windows-latest
-    env:
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
     steps:
       - name: Checkout repository
@@ -33,5 +31,7 @@ jobs:
 
       - name: Publish to GitHub Releases
         uses: softprops/action-gh-release@v1
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
           files: dist/*.exe
