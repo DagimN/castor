@@ -38,7 +38,7 @@ jobs:
         env:
           token: "$GH_TOKEN"
         with:
-          tag_name: Installer
-          name: Installer
+          tag_name: v1.0.0
+          name: Castor Installer
           files: dist/*.exe
           token: "$GH_TOKEN"
