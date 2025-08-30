@@ -36,4 +36,6 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
+          tag_name: "Installer"
+          name: "Installer"
           files: dist/*.exe
