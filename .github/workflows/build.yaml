@@ -2,7 +2,7 @@ name: Build Castor Installer
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
@@ -19,7 +19,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: "22"
 
       - name: Install dependencies
         run: yarn install
@@ -36,9 +36,9 @@ jobs:
       - name: Publish to GitHub Releases
         uses: softprops/action-gh-release@v1
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          token: "$GH_TOKEN"
         with:
           tag_name: Installer
           name: Installer
           files: dist/*.exe
-          token: ${{ secrets.GH_TOKEN }}
+          token: "$GH_TOKEN"
