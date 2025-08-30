@@ -6,7 +6,11 @@ on:
 
 jobs:
   build:
+    name: Build Castor Installer
     runs-on: windows-latest
+    # environment: App Production
+    # env:
+      # GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
     steps:
       - name: Checkout repository
@@ -22,8 +26,8 @@ jobs:
 
       - name: Build Castor
         run: yarn run build
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        # env:
+          # GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -33,10 +37,10 @@ jobs:
 
       - name: Publish to GitHub Releases
         uses: softprops/action-gh-release@v1
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        # env:
+          # GH_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
-          tag_name: "Installer"
-          name: "Installer"
+          tag_name: Installer
+          name: Installer
           files: dist/*.exe
-          token: ${{ secrets.GH_TOKEN }}
+          # token: ${{ secrets.GH_TOKEN }}
