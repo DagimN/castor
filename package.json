@@ -5,6 +5,7 @@
   "description": "Castor is a tool that will be used for managing, organizing and displaying different files to a projector screen that will separate the control panel and the projector screen, so that the projector screen will always have a clean flow.",
   "type": "module",
   "main": "electron/main.ts",
+  "publish": null,
   "scripts": {
     "package": "electron-forge package",
     "make": "electron-forge make",
@@ -13,7 +14,7 @@
     "react:dev": "vite",
     "electron:dev": "electronmon electron/main.ts",
     "start": "concurrently \"yarn react:dev\" \"yarn electron:dev\"",
-    "build": "vite build && electron-builder",
+    "build": "vite build && electron-builder --publish=never",
     "react:build": "vite build"
   },
   "keywords": [
