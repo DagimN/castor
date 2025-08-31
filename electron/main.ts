@@ -54,7 +54,6 @@ const createProjectorWindow = (): void => {
       },
     });
 
-    projectorWindow.webContents.toggleDevTools();
     projectorWindow.loadURL("http://localhost:5173/projector");
 
     projectorWindow.on("close", (event) => {
@@ -100,12 +99,12 @@ ipcMain.handle("open-file-dialog", async () => {
   return result.filePaths;
 });
 
-ipcMain.handle("load-file", async (event, filePath) => {
+ipcMain.handle("load-file", async (_, filePath) => {
   const data = await fs.promises.readFile(filePath);
   return data.toString("base64");
 });
 
-ipcMain.on("media-update", (event, newSource) => {
+ipcMain.on("media-update", (_, newSource) => {
   projectorWindow?.webContents.send("media-update", newSource);
 });
 
@@ -116,4 +115,8 @@ ipcMain.on("open-projector-window", () => {
 ipcMain.on("close-projector-window", () => {
   projectorWindow?.destroy();
   projectorWindow = undefined;
+});
+
+ipcMain.on("video-control", (_event, { command, payload }) => {
+  projectorWindow?.webContents.send("video-control", { command, payload });
 });

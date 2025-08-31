@@ -1,4 +1,5 @@
 const { contextBridge, ipcRenderer } = require("electron");
+const { on } = require("events");
 
 contextBridge.exposeInMainWorld("electron", {
   openFileDialog: () => ipcRenderer.invoke("open-file-dialog"),
@@ -12,7 +13,17 @@ contextBridge.exposeInMainWorld("electron", {
     ipcRenderer.on("media-update", (_, newSource) => {
       callback(newSource);
     }),
+  onVideoCommand: (callback) =>
+    ipcRenderer.on("video-control", (_, { command, payload }) => {
+      callback({ command, payload });
+    }),
   removeMediaUpdateListener: (callback) => {
     ipcRenderer.removeListener("media-update", callback);
+  },
+  removeVideoCommandListener: (callback) => {
+    ipcRenderer.removeListener("video-control", callback);
+  },
+  sendVideoCommand: (command, payload) => {
+    ipcRenderer.send("video-control", { command, payload });
   },
 });

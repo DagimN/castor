@@ -15,12 +15,21 @@ const FileTile = ({ filePath }: { filePath: string }) => {
 
   return (
     <li className="relative w-auto shrink-0 group p-2">
-      <img
-        src={source}
-        alt="file"
-        className={`h-[150px] aspect-auto cursor-pointer rounded-lg ${selectedFile === filePath ? "ring-4 ring-teal-500" : ""}`}
-        onClick={() => setSelectedFile(filePath)}
-      />
+      {source?.includes("video") ? (
+        <video
+          src={source}
+          className={`h-[150px] aspect-auto cursor-pointer rounded-lg ${selectedFile === filePath ? "ring-4 ring-teal-500" : ""}`}
+          onClick={() => setSelectedFile(filePath)}
+        />
+      ) : (
+        <img
+          src={source}
+          alt="file"
+          className={`h-[150px] aspect-auto cursor-pointer rounded-lg ${selectedFile === filePath ? "ring-4 ring-teal-500" : ""}`}
+          onClick={() => setSelectedFile(filePath)}
+        />
+      )}
+
       <button
         className="absolute top-0 right-0 bg-teal-500 rounded-full group-hover:visible invisible cursor-pointer"
         onClick={() => {
