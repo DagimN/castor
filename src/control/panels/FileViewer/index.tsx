@@ -10,9 +10,9 @@ const FileViewer = () => {
         className="rounded-xl bg-teal-700 px-4 py-2 m-4 hover:bg-teal-600 text-white font-bold cursor-pointer"
         onClick={async () => {
           if (window.electron) {
-            const files = await window.electron.openFileDialog();
-            if (files && files.length > 0) {
-              setFiles(files);
+            const newFiles = await window.electron.openFileDialog();
+            if (newFiles && newFiles.length > 0) {
+              setFiles([...newFiles, ...files]);
             }
           } else {
             console.error("Electron API is missing");
