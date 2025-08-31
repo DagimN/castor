@@ -53,6 +53,9 @@ const PreviewPanel = () => {
             onClick={() => {
               if (window.electron) {
                 window.electron.openProjectorWindow();
+                setTimeout(() => {
+                  window.electron.sendMediaToProjector(source);
+                }, 300);
               }
             }}
           >
