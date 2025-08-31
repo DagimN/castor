@@ -13,8 +13,16 @@ declare global {
         callback: (newSource: string) => void
       ) => void;
       sendVideoCommand: (command: string, payload?: any) => void;
-      onVideoCommand: (callback: (args: { command: string; payload: number }) => void) => void;
-      removeVideoCommandListener: (callback: (args: { command: string; payload: number }) => void) => void;
+      onVideoCommand: (
+        callback: (args: { command: string; payload: number }) => void
+      ) => void;
+      removeVideoCommandListener: (
+        callback: (args: { command: string; payload: number }) => void
+      ) => void;
+      fetchImageMetadata: (filePath: string) => any;
+      fetchVideoMetadata: (
+        filePath: string
+      ) => Promise<any>;
     };
   }
 }

@@ -2,6 +2,8 @@ import { app, BrowserWindow, ipcMain, dialog } from "electron";
 import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
+import { ExifParserFactory } from "ts-exif-parser";
+import ffmpeg from "fluent-ffmpeg";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -102,6 +104,26 @@ ipcMain.handle("open-file-dialog", async () => {
 ipcMain.handle("load-file", async (_, filePath) => {
   const data = await fs.promises.readFile(filePath);
   return data.toString("base64");
+});
+
+ipcMain.handle("fetch-image-metadata", async (_, filePath: string) => {
+  const buffer = fs.readFileSync(filePath);
+  const parser = ExifParserFactory.create(buffer);
+  const result = parser.parse();
+  console.log(result.tags);
+  return result.tags;
+});
+
+ipcMain.handle("fetch-video-metadata", async (_event, filePath: string) => {
+  return new Promise((resolve, reject) => {
+    ffmpeg.ffprobe(filePath, (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(data);
+      }
+    });
+  });
 });
 
 ipcMain.on("media-update", (_, newSource) => {

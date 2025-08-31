@@ -7,7 +7,7 @@ export const loadFile = async (filePath: string) => {
   }
 };
 
-const getMimeType = (extension: string | undefined) => {
+export const getMimeType = (extension: string | undefined) => {
   switch (extension) {
     case "jpg":
     case "jpeg":
@@ -34,5 +34,3 @@ const getMimeType = (extension: string | undefined) => {
       return "application/octet-stream";
   }
 };
-
-

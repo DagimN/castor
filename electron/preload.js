@@ -26,4 +26,8 @@ contextBridge.exposeInMainWorld("electron", {
   sendVideoCommand: (command, payload) => {
     ipcRenderer.send("video-control", { command, payload });
   },
+  fetchImageMetadata: (filePath) =>
+    ipcRenderer.invoke("fetch-image-metadata", filePath),
+  fetchVideoMetadata: (filePath, callback) =>
+    ipcRenderer.invoke("fetch-video-metadata", filePath),
 });
