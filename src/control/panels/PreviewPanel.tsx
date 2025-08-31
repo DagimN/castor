@@ -3,16 +3,18 @@ import { useMediaStore } from "../../stores/mediaStore";
 import { loadFile } from "../utils/file_functions";
 
 const PreviewPanel = () => {
-  const [source, setSource] = useState<string | null>(null);
+  const [source, setSource] = useState<string>();
   const { selectedFile } = useMediaStore();
 
   useEffect(() => {
     if (selectedFile) {
       loadFile(selectedFile).then((base64) => {
-        setSource(base64 || null);
+        setSource(base64);
+        window.electron.sendMediaToProjector(base64);
       });
     } else {
-      setSource(null);
+      setSource(undefined);
+      window.electron.closeProjectorWindow();
     }
   }, [selectedFile]);
 
