@@ -5,7 +5,7 @@ const FileViewer = () => {
   const { setFiles, files } = useMediaStore();
 
   return (
-    <section className="h-[38%] border border-gray-700 rounded-md">
+    <section className="min-h-[38%] border border-gray-700 rounded-md">
       <button
         className="rounded-xl bg-teal-700 px-4 py-2 m-4 hover:bg-teal-600 text-white font-bold cursor-pointer"
         onClick={async () => {
