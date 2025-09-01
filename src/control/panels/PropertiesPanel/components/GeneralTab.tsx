@@ -40,7 +40,7 @@ const GeneralTab = () => {
         Object.keys(metaData).map((key) => (
           <div key={key} className="flex justify-between px-8 gap-10 text-white">
             <span className="font-bold">{key}</span>
-            <span className="text-right">{String(metaData[key])}</span>
+            <span className="text-right w-[50%] wrap-break-word">{String(metaData[key])}</span>
           </div>
         ))
       ) : (
