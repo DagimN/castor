@@ -6,12 +6,12 @@ contextBridge.exposeInMainWorld("electron", {
   loadFile: (filePath) => ipcRenderer.invoke("load-file", filePath),
   openProjectorWindow: () => ipcRenderer.send("open-projector-window"),
   closeProjectorWindow: () => ipcRenderer.send("close-projector-window"),
-  sendMediaToProjector: (base64) => {
-    ipcRenderer.send("media-update", base64);
+  sendMediaToProjector: (base64, verse) => {
+    ipcRenderer.send("media-update", base64, verse);
   },
   onMediaUpdate: (callback) =>
-    ipcRenderer.on("media-update", (_, newSource) => {
-      callback(newSource);
+    ipcRenderer.on("media-update", (_, newSource, verse) => {
+      callback(newSource, verse);
     }),
   onVideoCommand: (callback) =>
     ipcRenderer.on("video-control", (_, { command, payload }) => {

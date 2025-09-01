@@ -7,7 +7,7 @@ declare global {
       loadFile: (filePath: string) => Promise<string>;
       openProjectorWindow: () => void;
       closeProjectorWindow: () => void;
-      sendMediaToProjector: (base64) => Promise<string>;
+      sendMediaToProjector: (base64, verse?: string) => Promise<string>;
       onMediaUpdate: (callback: (newSource: string) => void) => void;
       removeMediaUpdateListener: (
         callback: (newSource: string) => void

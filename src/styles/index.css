@@ -1,7 +1,22 @@
 @import "tailwindcss";
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
-    Arial, sans-serif;
-  background-color: #101828
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  background-color: #101828;
+}
+
+@font-face {
+  font-family: "Nokia";
+  src: url("../assets/fonts/Nokia/NokiaKokia.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Noto-Ethiopic";
+  src: url("../assets/fonts/NotoSansEthiopic-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
 }

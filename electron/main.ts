@@ -124,8 +124,8 @@ ipcMain.handle("fetch-video-metadata", async (_event, filePath: string) => {
   });
 });
 
-ipcMain.on("media-update", (_, newSource) => {
-  projectorWindow?.webContents.send("media-update", newSource);
+ipcMain.on("media-update", (_, newSource, verse) => {
+  projectorWindow?.webContents.send("media-update", newSource, verse);
 });
 
 ipcMain.on("open-projector-window", () => {
