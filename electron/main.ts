@@ -110,8 +110,8 @@ ipcMain.handle("fetch-image-metadata", async (_, filePath: string) => {
   const buffer = fs.readFileSync(filePath);
   const parser = ExifParserFactory.create(buffer);
   const result = parser.parse();
-  console.log(result.tags);
-  return result.tags;
+  
+  return result.imageSize;
 });
 
 ipcMain.handle("fetch-video-metadata", async (_event, filePath: string) => {
@@ -120,7 +120,7 @@ ipcMain.handle("fetch-video-metadata", async (_event, filePath: string) => {
       if (err) {
         reject(err);
       } else {
-        resolve(data);
+        resolve(data.format);
       }
     });
   });

@@ -35,12 +35,12 @@ const GeneralTab = () => {
   }, [selectedFile]);
 
   return (
-    <section className="overflow-auto h-[90%]">
+    <section className="overflow-y-auto h-[90%]">
       {metaData && Object.keys(metaData).length > 0 ? (
         Object.keys(metaData).map((key) => (
-          <div key={key} className="flex justify-between px-8 text-white">
+          <div key={key} className="flex justify-between px-8 gap-10 text-white">
             <span className="font-bold">{key}</span>
-            <span>{String(metaData[key])}</span>
+            <span className="text-right">{String(metaData[key])}</span>
           </div>
         ))
       ) : (
