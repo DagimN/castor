@@ -66,6 +66,7 @@ const Projector = () => {
           src={source}
           className="aspect-auto h-screen flex justify-center"
           muted
+          preload="auto"
         />
       ) : (
         <img

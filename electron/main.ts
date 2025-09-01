@@ -25,8 +25,6 @@ const checkSquirrel = async () => {
 };
 checkSquirrel();
 
-app.disableHardwareAcceleration();
-
 const createWindow = (): void => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -110,7 +108,7 @@ ipcMain.handle("fetch-image-metadata", async (_, filePath: string) => {
   const buffer = fs.readFileSync(filePath);
   const parser = ExifParserFactory.create(buffer);
   const result = parser.parse();
-  
+
   return result.imageSize;
 });
 
