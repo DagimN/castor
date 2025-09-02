@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Castor is a tool that will be used for managing, organizing and displaying different files to a projector screen that will separate the control panel and the projector screen, so that the projector screen will always have a clean flow.",
   "type": "module",
-  "main": "electron/main.ts",
+  "main": "electron/main.js",
   "publish": null,
   "scripts": {
     "package": "electron-forge package",
@@ -43,7 +43,12 @@
       "oneClick": false,
       "perMachine": true,
       "allowToChangeInstallationDirectory": true
-    }
+    },
+    "files": [
+      "dist/**/*",
+      "electron/*.js",
+      "package.json"
+    ]
   },
   "license": "MIT",
   "devDependencies": {
