@@ -67,9 +67,9 @@ const createProjectorWindow = () => {
     });
 
     if (app.isPackaged) {
-      projectorWindow.loadFile(
-        path.join(__dirname, "../dist/index.html")
-      );
+      projectorWindow.loadFile(path.join(__dirname, "../dist/index.html"), {
+        hash: "/projector",
+      });
     } else {
       projectorWindow.loadURL("http://localhost:5173/projector");
     }
