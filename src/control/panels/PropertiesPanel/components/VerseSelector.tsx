@@ -1,18 +1,28 @@
-import { useEffect, useState } from "react";
-import nasb from "../../../../assets/data/am_nasb.json";
+import { use, useEffect, useState } from "react";
+import { nasv, nasb, am54 } from "../../../../assets/data";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { useMediaStore } from "../../../../stores/mediaStore";
 import { getMimeType, loadFile } from "../../../utils/file_functions";
+import { N } from "@upstash/redis/zmscore-CjoCv9kz";
 
 const VerseSelector = () => {
   const { files } = useMediaStore();
   const [source, setSource] = useState<string | undefined>();
+  const [translation, setTranslation] = useState<"NASV" | "NASB" | "AM54">(
+    "NASV"
+  );
   const [backgroundImage, setBackgroundImage] = useState<string | undefined>();
   const [bookIndex, setBookIndex] = useState(0);
   const [chapterIndex, setChapterIndex] = useState(0);
   const [verseIndex, setVerseIndex] = useState(0);
 
-  const bible = nasb as {
+  const translations = {
+    NASV: nasv,
+    NASB: nasb,
+    AM54: am54,
+  };
+
+  const bible = translations[translation] as {
     name: string;
     abbrev: string;
     chapters: string[][];
@@ -37,6 +47,18 @@ const VerseSelector = () => {
 
   return (
     <section className="px-8 overflow-auto h-[90%]">
+      <select
+        name="translation"
+        id=""
+        className="w-full text-teal-500"
+        onChange={(e) =>
+          setTranslation(e.target.value as "NASV" | "NASB" | "AM54")
+        }
+      >
+        <option value={"NASV"}> NASV </option>
+        <option value={"NASB"}> NASB </option>
+        <option value={"AM54"}> AM54 </option>
+      </select>
       <nav className="flex gap-4">
         <select
           name="book"

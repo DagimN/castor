@@ -12,7 +12,7 @@
     "publish": "electron-forge publish",
     "lint": "eslint --ext .ts,.tsx .",
     "react:dev": "vite",
-    "electron:dev": "electronmon electron/main.ts",
+    "electron:dev": "electronmon electron/main.js",
     "start": "concurrently \"yarn react:dev\" \"yarn electron:dev\"",
     "build": "vite build && electron-builder --publish=never",
     "react:build": "vite build"
