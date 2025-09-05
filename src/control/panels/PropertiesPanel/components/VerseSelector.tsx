@@ -62,7 +62,7 @@ const VerseSelector = () => {
       <nav className="flex gap-4">
         <select
           name="book"
-          className="min-w-[40%] text-teal-500"
+          className="min-w-[40%] w-full text-teal-500"
           onChange={(e) => {
             setBookIndex(Number(e.target.value));
             setChapterIndex(0);
