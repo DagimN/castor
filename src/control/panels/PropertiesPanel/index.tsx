@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { GeneralTab, VerseSelector } from "./components";
+import { GeneralTab, TextInputTab, VerseSelector } from "./components";
 
 const PropertiesPanel = () => {
-  const [propertyTab, setPropertyTab] = useState<"general" | "verseSelector">(
-    "general"
-  );
+  const [propertyTab, setPropertyTab] = useState<
+    "general" | "verseSelector" | "textInput"
+  >("general");
 
   const renderTab = () => {
     switch (propertyTab) {
@@ -12,6 +12,8 @@ const PropertiesPanel = () => {
         return <GeneralTab />;
       case "verseSelector":
         return <VerseSelector />;
+      case "textInput":
+        return <TextInputTab />;
       default:
         return <></>;
     }
@@ -31,6 +33,12 @@ const PropertiesPanel = () => {
           onClick={() => setPropertyTab("verseSelector")}
         >
           Verse Selector
+        </h1>
+        <h1
+          className={`cursor-pointer px-4 text-center grid items-center ${propertyTab === "textInput" && "bg-teal-500 text-black rounded-full"}`}
+          onClick={() => setPropertyTab("textInput")}
+        >
+          Text Input
         </h1>
       </nav>
       {renderTab()}
