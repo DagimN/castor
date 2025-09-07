@@ -1,10 +1,15 @@
 import { useState } from "react";
-import { GeneralTab, TextInputTab, VerseSelector } from "./components";
+import {
+  GeneralTab,
+  LyricsTab,
+  TextInputTab,
+  VerseSelector,
+} from "./components";
 
 const PropertiesPanel = () => {
   const [propertyTab, setPropertyTab] = useState<
-    "general" | "verseSelector" | "textInput"
-  >("general");
+    "general" | "verseSelector" | "textInput" | "lyrics"
+  >("lyrics");
 
   const renderTab = () => {
     switch (propertyTab) {
@@ -14,13 +19,15 @@ const PropertiesPanel = () => {
         return <VerseSelector />;
       case "textInput":
         return <TextInputTab />;
+      case "lyrics":
+        return <LyricsTab />;
       default:
         return <></>;
     }
   };
 
   return (
-    <aside className="w-[30%] border border-gray-700 rounded-md">
+    <aside className="w-[30%] border border-gray-700 rounded-md overflow-x-auto">
       <nav className="flex gap-4 p-4 text-teal-500">
         <h1
           className={`cursor-pointer px-4 grid items-center ${propertyTab === "general" && "bg-teal-500 text-black rounded-full"}`}
@@ -39,6 +46,12 @@ const PropertiesPanel = () => {
           onClick={() => setPropertyTab("textInput")}
         >
           Text Input
+        </h1>
+        <h1
+          className={`cursor-pointer px-4 text-center grid items-center ${propertyTab === "lyrics" && "bg-teal-500 text-black rounded-full"}`}
+          onClick={() => setPropertyTab("lyrics")}
+        >
+          Lyrics
         </h1>
       </nav>
       {renderTab()}

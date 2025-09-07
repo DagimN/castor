@@ -3,18 +3,34 @@ import { useEffect, useRef, useState } from "react";
 const Projector = () => {
   const [source, setSource] = useState<string>();
   const [verse, setVerse] = useState<string | undefined>();
+  const [lyric, setLyric] = useState<string | undefined>();
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const handleUpdate = (newSource: string, newVerse?: string) => {
       setSource(newSource);
       setVerse(newVerse);
+      setLyric(undefined);
     };
 
     window.electron.onMediaUpdate(handleUpdate);
 
     return () => {
       window.electron.removeMediaUpdateListener(handleUpdate);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleUpdate = (newSource: string, newLyric?: string) => {
+      setSource(newSource);
+      setLyric(newLyric);
+      setVerse(undefined);
+    };
+
+    window.electron.onLyricUpdate(handleUpdate);
+
+    return () => {
+      window.electron.removeLyricUpdateListener(handleUpdate);
     };
   }, []);
 
@@ -61,7 +77,7 @@ const Projector = () => {
   }, []);
 
   return (
-    <main className="flex justify-center relative h-screen w-screen">
+    <main className="flex justify-center items-center justify-items-center place-content-center relative h-screen w-screen">
       {source?.includes("video") ? (
         <video
           ref={videoRef}
@@ -76,9 +92,16 @@ const Projector = () => {
           className="aspect-auto h-screen flex justify-center absolute z-10"
         />
       )}
-      <h1 className="text-white text-[56px] w-[70%] text-center font-bold absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
+      <h1 className="text-white text-[56px] w-[70%] absolute flex text-center font-bold z-20">
         {verse}
       </h1>
+
+      <pre
+        className="text-white text-[44px] text-start font-bold absolute z-20"
+        dangerouslySetInnerHTML={{
+          __html: lyric?.replace(/\s+/g, " ") ?? "",
+        }}
+      />
     </main>
   );
 };

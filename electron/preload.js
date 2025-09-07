@@ -9,9 +9,16 @@ contextBridge.exposeInMainWorld("electron", {
   sendMediaToProjector: (base64, verse) => {
     ipcRenderer.send("media-update", base64, verse);
   },
+  sendLyricToProjector: (base64, lyric) => {
+    ipcRenderer.send("lyric-update", base64, lyric);
+  },
   onMediaUpdate: (callback) =>
     ipcRenderer.on("media-update", (_, newSource, verse) => {
       callback(newSource, verse);
+    }),
+  onLyricUpdate: (callback) =>
+    ipcRenderer.on("lyric-update", (_, newSource, lyric) => {
+      callback(newSource, lyric);
     }),
   onVideoCommand: (callback) =>
     ipcRenderer.on("video-control", (_, { command, payload }) => {
@@ -19,6 +26,9 @@ contextBridge.exposeInMainWorld("electron", {
     }),
   removeMediaUpdateListener: (callback) => {
     ipcRenderer.removeListener("media-update", callback);
+  },
+  removeLyricUpdateListener: (callback) => {
+    ipcRenderer.removeListener("lyric-update", callback);
   },
   removeVideoCommandListener: (callback) => {
     ipcRenderer.removeListener("video-control", callback);
@@ -30,4 +40,6 @@ contextBridge.exposeInMainWorld("electron", {
     ipcRenderer.invoke("fetch-image-metadata", filePath),
   fetchVideoMetadata: (filePath, callback) =>
     ipcRenderer.invoke("fetch-video-metadata", filePath),
+  fetchWebsite: (url, selector) =>
+    ipcRenderer.invoke("fetch-website", url, selector),
 });

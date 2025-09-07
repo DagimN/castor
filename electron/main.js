@@ -4,6 +4,7 @@ import { fileURLToPath } from "url";
 import fs from "fs";
 import { ExifParserFactory } from "ts-exif-parser";
 import ffmpeg from "fluent-ffmpeg";
+import * as cheerio from "cheerio";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -74,6 +75,7 @@ const createProjectorWindow = () => {
       projectorWindow.loadURL("http://localhost:5173/projector");
     }
 
+    // projectorWindow.webContents.toggleDevTools();
     projectorWindow.on("close", (event) => {
       projectorWindow = undefined;
     });
@@ -146,6 +148,10 @@ ipcMain.on("media-update", (_, newSource, verse) => {
   projectorWindow?.webContents.send("media-update", newSource, verse);
 });
 
+ipcMain.on("lyric-update", (_, newSource, verse) => {
+  projectorWindow?.webContents.send("lyric-update", newSource, verse);
+});
+
 ipcMain.on("open-projector-window", () => {
   createProjectorWindow();
 });
@@ -158,3 +164,19 @@ ipcMain.on("close-projector-window", () => {
 ipcMain.on("video-control", (_event, { command, payload }) => {
   projectorWindow?.webContents.send("video-control", { command, payload });
 });
+
+ipcMain.handle("fetch-website", async (_, url, selector) => {
+  const res = await fetch(url);
+  const html = await res.text();
+
+  const $ = cheerio.load(html);
+
+  if (selector) {
+    return $(selector)
+      .map((i, el) => $(el).html())
+      .get();
+  }
+
+  return html;
+});
+
