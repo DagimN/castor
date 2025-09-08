@@ -4,6 +4,7 @@ const Projector = () => {
   const [source, setSource] = useState<string>();
   const [verse, setVerse] = useState<string | undefined>();
   const [lyric, setLyric] = useState<string | undefined>();
+  const [isLooped, setIsLooped] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -55,6 +56,10 @@ const Projector = () => {
         case "seek":
           video.currentTime = payload;
           break;
+        case "loop":
+          console.log(payload, command)
+          setIsLooped(payload === 1);
+          break;
       }
     };
 
@@ -85,6 +90,8 @@ const Projector = () => {
           className="aspect-auto h-screen flex justify-center absolute z-10"
           muted
           preload="auto"
+          loop={isLooped}
+          autoPlay
         />
       ) : (
         <img

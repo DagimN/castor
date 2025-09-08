@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { useMediaStore } from "../../stores/mediaStore";
 import { loadFile } from "../utils/file_functions";
 import { FaPlay } from "react-icons/fa";
+import { TiArrowLoop } from "react-icons/ti";
 
 const PreviewPanel = () => {
   const [source, setSource] = useState<string>();
+  const [isLooped, setIsLooped] = useState(false);
   const { selectedFile } = useMediaStore();
 
   useEffect(() => {
@@ -40,6 +42,8 @@ const PreviewPanel = () => {
               src={source}
               className="h-full w-full"
               controls
+              loop={isLooped}
+              autoPlay
               onPlay={handlePlay}
               onPause={handlePause}
               onTimeUpdate={(e) => handleSeek(e.currentTarget.currentTime)}
@@ -48,19 +52,36 @@ const PreviewPanel = () => {
             <img src={source} className="aspect-auto h-full" />
           )}
 
-          <button
-            className="bg-teal-500 hover:bg-teal-600 text-white absolute top-0 right-5 my-4 px-4 py-2 rounded-full cursor-pointer"
-            onClick={() => {
-              if (window.electron) {
-                window.electron.openProjectorWindow();
-                setTimeout(() => {
-                  window.electron.sendMediaToProjector(source);
-                }, 300);
-              }
-            }}
-          >
-            <FaPlay />
-          </button>
+          <div className="absolute top-0 right-5 my-4 grid gap-4">
+            <button
+              className="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-full cursor-pointer"
+              onClick={() => {
+                if (window.electron) {
+                  window.electron.openProjectorWindow();
+                  setTimeout(() => {
+                    window.electron.sendMediaToProjector(source);
+                    window.electron.sendVideoCommand("loop", isLooped ? 1 : 0);
+                  }, 300);
+                }
+              }}
+            >
+              <FaPlay />
+            </button>
+
+            {source.includes("video") && (
+              <button
+                className={`${isLooped ? "bg-teal-500" : ""} border border-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-full cursor-pointer`}
+                onClick={() => {
+                  if (window.electron) {
+                    window.electron.sendVideoCommand("loop", !isLooped ? 1 : 0);
+                    setIsLooped(!isLooped);
+                  }
+                }}
+              >
+                <TiArrowLoop />
+              </button>
+            )}
+          </div>
         </div>
       ) : (
         <div className="flex items-center justify-center h-full text-gray-500">

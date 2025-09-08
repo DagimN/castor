@@ -75,7 +75,7 @@ const createProjectorWindow = () => {
       projectorWindow.loadURL("http://localhost:5173/projector");
     }
 
-    // projectorWindow.webContents.toggleDevTools();
+    projectorWindow.webContents.toggleDevTools();
     projectorWindow.on("close", (event) => {
       projectorWindow = undefined;
     });
