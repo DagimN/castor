@@ -9,7 +9,7 @@ import {
 const PropertiesPanel = () => {
   const [propertyTab, setPropertyTab] = useState<
     "general" | "verseSelector" | "textInput" | "lyrics"
-  >("lyrics");
+  >("general");
 
   const renderTab = () => {
     switch (propertyTab) {
