@@ -5,21 +5,32 @@ const Projector = () => {
   const [verse, setVerse] = useState<string | undefined>();
   const [lyric, setLyric] = useState<string | undefined>();
   const [isLooped, setIsLooped] = useState(false);
+  const [textStyles, setTextStyles] = useState<string | undefined>(
+    "text-white text-[56px] text-center font-bold"
+  );
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  useEffect(() => {
-    const handleUpdate = (newSource: string, newVerse?: string) => {
-      setSource(newSource);
-      setVerse(newVerse);
-      setLyric(undefined);
-    };
+  const handleUpdate = (
+    newSource: string,
+    newVerse?: string,
+    styles?: string
+  ) => {
+    setSource(newSource);
+    setVerse(newVerse);
+    setLyric(undefined);
 
+    if (styles) {
+      setTextStyles(styles);  
+    }
+  };
+
+  useEffect(() => {
     window.electron.onMediaUpdate(handleUpdate);
 
     return () => {
       window.electron.removeMediaUpdateListener(handleUpdate);
     };
-  }, []);
+  }, [textStyles]);
 
   useEffect(() => {
     const handleUpdate = (newSource: string, newLyric?: string) => {
@@ -57,7 +68,7 @@ const Projector = () => {
           video.currentTime = payload;
           break;
         case "loop":
-          console.log(payload, command)
+          console.log(payload, command);
           setIsLooped(payload === 1);
           break;
       }
@@ -99,9 +110,7 @@ const Projector = () => {
           className="aspect-auto h-screen flex justify-center absolute z-10"
         />
       )}
-      <h1 className="text-white text-[56px] w-[70%] absolute flex text-center font-bold z-20">
-        {verse}
-      </h1>
+      <h1 className={`absolute flex z-20 w-[70%] ${textStyles}`}>{verse}</h1>
 
       <pre
         className="text-white text-[44px] text-start font-bold absolute z-20"

@@ -43,6 +43,11 @@ const createWindow = () => {
   } else {
     mainWindow.loadURL("http://localhost:5173");
   }
+
+  mainWindow.on("close", (event) => {
+    projectorWindow?.destroy();
+    projectorWindow = undefined;
+  });
 };
 
 const createProjectorWindow = () => {
@@ -75,7 +80,7 @@ const createProjectorWindow = () => {
       projectorWindow.loadURL("http://localhost:5173/projector");
     }
 
-    projectorWindow.webContents.toggleDevTools();
+    // projectorWindow.webContents.toggleDevTools();
     projectorWindow.on("close", (event) => {
       projectorWindow = undefined;
     });
@@ -144,8 +149,8 @@ ipcMain.handle("fetch-video-metadata", async (_event, filePath) => {
   });
 });
 
-ipcMain.on("media-update", (_, newSource, verse) => {
-  projectorWindow?.webContents.send("media-update", newSource, verse);
+ipcMain.on("media-update", (_, newSource, verse, styles) => {
+  projectorWindow?.webContents.send("media-update", newSource, verse, styles);
 });
 
 ipcMain.on("lyric-update", (_, newSource, verse) => {
