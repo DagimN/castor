@@ -6,10 +6,10 @@ import Projector from "./projector";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
-  <BrowserRouter>
+  <HashRouter>
     <Routes>
       <Route path="/" element={<ControlPanel />} />
       <Route path="/projector" element={<Projector />} />
     </Routes>
-  </BrowserRouter>
+  </HashRouter>
 );
