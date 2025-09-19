@@ -30,23 +30,31 @@ const LyricsTab = () => {
     if (!lyricsUrl) return;
 
     setIsFetching(true);
-    const data = await window.electron.fetchWebsite(lyricsUrl, "div.poem");
-    setIsFetching(false);
-
-    if (data) {
-      const lyrics = data[0]
-        .split("<br>\n<br>")
-        .map((lyric: string) =>
+    const firstData = await window.electron.fetchWebsite(lyricsUrl, "div.poem");
+    console.log(firstData);
+    if (firstData.length > 0) {
+      setIsFetching(false);
+      const lyrics = firstData[0].split("<br>\n<br>").map(
+        (lyric: string) =>
           lyric
             .replaceAll(
               '<span class="mw-poem-indented" style="display: inline-block; margin-left: 2em;">',
               ""
             )
-                .replaceAll("</span>", "")
-          //TODO: Strip css
-          //TODO: Implement dynamic styles to pass to the projector i.e. text-color, font size, font weight, etc
-            //TODO: Implement opacity
-        );
+            .replaceAll("</span>", "")
+      );
+      setLyrics(lyrics);
+      return;
+    }
+
+    const secondData = await window.electron.fetchWebsite(
+      lyricsUrl,
+      "div.mw-parser-output"
+    );
+    setIsFetching(false);
+    console.log(secondData);
+    if (secondData.length > 0) {
+      const lyrics = secondData[0].split("<p><br>\n</p>");
       setLyrics(lyrics);
     }
   };
