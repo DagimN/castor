@@ -29,13 +29,6 @@ const VerseSelector = () => {
   }[];
 
   useEffect(() => {
-    window.electron.sendMediaToProjector(
-      source,
-      bible[bookIndex].chapters[chapterIndex][verseIndex]
-    );
-  }, [verseIndex]);
-
-  useEffect(() => {
     if (backgroundImage) {
       loadFile(backgroundImage).then((base64) => {
         setSource(base64);
@@ -99,10 +92,6 @@ const VerseSelector = () => {
           name="chapter"
           className="text-teal-500"
           onChange={(e) => {
-            window.electron.sendMediaToProjector(
-              source,
-              bible[bookIndex].chapters[chapterIndex][verseIndex]
-            );
             setVerseIndex(Number(e.target.value));
           }}
           value={verseIndex}
@@ -120,6 +109,10 @@ const VerseSelector = () => {
           onClick={() => {
             if (verseIndex > 0) {
               setVerseIndex(verseIndex - 1);
+              window.electron.sendMediaToProjector(
+                source,
+                bible[bookIndex].chapters[chapterIndex][verseIndex]
+              );
             }
           }}
         >
@@ -133,6 +126,10 @@ const VerseSelector = () => {
               bible[bookIndex].chapters[chapterIndex].length - 1
             ) {
               setVerseIndex(verseIndex + 1);
+              window.electron.sendMediaToProjector(
+                source,
+                bible[bookIndex].chapters[chapterIndex][verseIndex]
+              );
             }
           }}
         >
