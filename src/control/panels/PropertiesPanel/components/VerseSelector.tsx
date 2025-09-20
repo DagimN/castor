@@ -108,10 +108,11 @@ const VerseSelector = () => {
           className="bg-teal-500 p-3 rounded-full cursor-pointer"
           onClick={() => {
             if (verseIndex > 0) {
-              setVerseIndex(verseIndex - 1);
+              const updatedIndex = verseIndex - 1;
+              setVerseIndex(updatedIndex);
               window.electron.sendMediaToProjector(
                 source,
-                bible[bookIndex].chapters[chapterIndex][verseIndex]
+                `"${bible[bookIndex].chapters[chapterIndex][updatedIndex]}" ${bible[bookIndex].abbrev} ${chapterIndex + 1}:${updatedIndex + 1}`
               );
             }
           }}
@@ -125,10 +126,11 @@ const VerseSelector = () => {
               verseIndex <
               bible[bookIndex].chapters[chapterIndex].length - 1
             ) {
-              setVerseIndex(verseIndex + 1);
+              const updatedIndex = verseIndex + 1;
+              setVerseIndex(updatedIndex);
               window.electron.sendMediaToProjector(
                 source,
-                bible[bookIndex].chapters[chapterIndex][verseIndex]
+                `"${bible[bookIndex].chapters[chapterIndex][updatedIndex]}" ${bible[bookIndex].abbrev} ${chapterIndex + 1}:${updatedIndex + 1}`
               );
             }
           }}
@@ -169,7 +171,7 @@ const VerseSelector = () => {
           setTimeout(() => {
             window.electron.sendMediaToProjector(
               source,
-              bible[bookIndex].chapters[chapterIndex][verseIndex]
+              `"${bible[bookIndex].chapters[chapterIndex][verseIndex]}" ${bible[bookIndex].abbrev} ${chapterIndex + 1}:${verseIndex + 1}`
             );
           }, 300);
         }}
