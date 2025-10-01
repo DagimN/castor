@@ -42,4 +42,5 @@ contextBridge.exposeInMainWorld("electron", {
     ipcRenderer.invoke("fetch-video-metadata", filePath),
   fetchWebsite: (url, selector) =>
     ipcRenderer.invoke("fetch-website", url, selector),
+  getLocalIP: () => ipcRenderer.invoke('get-local-ip')
 });

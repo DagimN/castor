@@ -33,6 +33,7 @@ declare global {
       fetchImageMetadata: (filePath: string) => any;
       fetchVideoMetadata: (filePath: string) => Promise<any>;
       fetchWebsite: (url: string, selector?: string) => Promise<any>;
+      getLocalIP: () => Promise<string>;
     };
   }
 }
