@@ -12,8 +12,6 @@ const GeneralTab = () => {
       return;
     }
     const mimeType = getMimeType(selectedFile.split(".").pop()?.toLowerCase());
-    console.log(mimeType);
-    console.log(mimeType?.includes("image"));
 
     if (mimeType?.includes("image")) {
       window.electron.fetchImageMetadata(selectedFile).then((data: any) => {

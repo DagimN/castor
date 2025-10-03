@@ -68,7 +68,6 @@ const Projector = () => {
           video.currentTime = payload;
           break;
         case "loop":
-          console.log(payload, command);
           setIsLooped(payload === 1);
           break;
       }

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EJS State Example</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    .images { display: flex; gap: 10px; margin-bottom: 20px; }
+    .images img { width: 120px; height: 120px; cursor: pointer; border: 2px solid transparent; border-radius: 8px; }
+    .images img:hover { border-color: #007bff; }
+    .state-box { margin-top: 20px; padding: 10px; border: 1px solid #ddd; display: inline-block; border-radius: 6px; }
+    button { padding: 8px 12px; margin: 5px; cursor: pointer; border: none; border-radius: 4px; background: #007bff; color: white; }
+    button:hover { background: #0056b3; }
+  </style>
+</head>
+<body>
+  <h2>Choose an Option</h2>
+
+  <!-- List of images -->
+  <div class="images">
+    <% images.forEach((img, idx) => { %>
+      <img src="<%= img %>" alt="Option <%= idx+1 %>" onclick="updateState('Image <%= idx+1 %> clicked')">
+    <% }) %>
+  </div>
+
+  <!-- Two buttons -->
+  <button onclick="updateState('Button A clicked')">Button A</button>
+  <button onclick="updateState('Button B clicked')">Button B</button>
+
+  <!-- State display -->
+  <div class="state-box">
+    <strong>Current State:</strong> <span id="state-text">None</span>
+  </div>
+
+  <script>
+    // state object (client-side only)
+    let state = { current: "None" };
+
+    function updateState(newValue) {
+      state.current = newValue;
+      document.getElementById("state-text").textContent = state.current;
+      console.log("State updated:", state);
+    }
+  </script>
+</body>
+</html>

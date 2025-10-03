@@ -1,25 +1,20 @@
 import { useEffect, useState } from "react";
 import { useMediaStore } from "../../stores/mediaStore";
-import { loadFile } from "../utils/file_functions";
-import { FaPlay } from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight, FaPlay } from "react-icons/fa";
 import { TiArrowLoop } from "react-icons/ti";
 
 const PreviewPanel = () => {
-  const [source, setSource] = useState<string>();
   const [isLooped, setIsLooped] = useState(false);
-  const { selectedFile } = useMediaStore();
+  const { selectedSource } = useMediaStore();
+  const [sourceIndex, setSourceIndex] = useState(0);
 
   useEffect(() => {
-    if (selectedFile) {
-      loadFile(selectedFile).then((base64) => {
-        setSource(base64);
-        window.electron.sendMediaToProjector(base64);
-      });
+    if (selectedSource) {
+      window.electron.sendMediaToProjector(selectedSource[sourceIndex]);
     } else {
-      setSource(undefined);
       window.electron.closeProjectorWindow();
     }
-  }, [selectedFile]);
+  }, [selectedSource]);
 
   const handlePlay = () => {
     window.electron.sendVideoCommand("play");
@@ -35,11 +30,11 @@ const PreviewPanel = () => {
 
   return (
     <section className="h-[60%] border relative border-gray-700 rounded-md mb-4 flex place-content-center">
-      {source ? (
+      {selectedSource ? (
         <div>
-          {source.includes("video") ? (
+          {selectedSource[0].includes("video") ? (
             <video
-              src={source}
+              src={selectedSource[0]}
               className="h-full w-full"
               controls
               loop={isLooped}
@@ -49,17 +44,22 @@ const PreviewPanel = () => {
               onTimeUpdate={(e) => handleSeek(e.currentTarget.currentTime)}
             />
           ) : (
-            <img src={source} className="aspect-auto h-full" />
+            <img
+              src={selectedSource[sourceIndex]}
+              className="aspect-auto h-full"
+            />
           )}
 
-          <div className="absolute top-0 right-5 my-4 grid gap-4">
+          <div className="absolute top-0 right-5 my-4 grid gap-4 justify-items-end">
             <button
-              className="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-full cursor-pointer"
+              className="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-full cursor-pointer w-min"
               onClick={() => {
                 if (window.electron) {
                   window.electron.openProjectorWindow();
                   setTimeout(() => {
-                    window.electron.sendMediaToProjector(source);
+                    window.electron.sendMediaToProjector(
+                      selectedSource[sourceIndex]
+                    );
                     window.electron.sendVideoCommand("loop", isLooped ? 1 : 0);
                   }, 300);
                 }
@@ -67,8 +67,46 @@ const PreviewPanel = () => {
             >
               <FaPlay />
             </button>
+            {selectedSource.length > 1 && (
+              <aside className="grid gap-4 justify-items-end">
+                <div className="flex gap-2">
+                  <button
+                    className="bg-teal-500 p-3 rounded-full cursor-pointer"
+                    onClick={() => {
+                      if (sourceIndex > 0) {
+                        const updatedIndex = sourceIndex - 1;
+                        setSourceIndex(updatedIndex);
+                        window.electron.sendMediaToProjector(
+                          selectedSource[updatedIndex]
+                        );
+                      }
+                    }}
+                  >
+                    <FaChevronLeft />
+                  </button>
+                  <button
+                    className="bg-teal-500 p-3 rounded-full cursor-pointer"
+                    onClick={() => {
+                      if (sourceIndex < selectedSource.length - 1) {
+                        const updatedIndex = sourceIndex + 1;
+                        setSourceIndex(updatedIndex);
+                        window.electron.sendMediaToProjector(
+                          selectedSource[updatedIndex]
+                        );
+                      }
+                    }}
+                  >
+                    <FaChevronRight />
+                  </button>
+                </div>
 
-            {source.includes("video") && (
+                <span className="bg-black/25 rounded-full px-4 py-1 text-white text-sm w-min">
+                  {sourceIndex + 1}/{selectedSource.length}
+                </span>
+              </aside>
+            )}
+
+            {selectedSource[0].includes("video") && (
               <button
                 className={`${isLooped ? "bg-teal-500" : ""} border border-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-full cursor-pointer`}
                 onClick={() => {

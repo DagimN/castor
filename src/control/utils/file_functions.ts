@@ -1,10 +1,15 @@
-export const loadFile = async (filePath: string) => {
+export const loadFile = async (filePath: string): Promise<string[]> => {
   if (window.electron) {
-    const data = await window.electron.loadFile(filePath);
-    const extension = filePath.split(".").pop()?.toLowerCase();
+    const buffer: string[] = await window.electron.loadFile(filePath);
 
-    return `data:${getMimeType(extension)};base64,${data}`;
+    return buffer.map((data) => {
+      const extension = filePath.split(".").pop()?.toLowerCase();
+
+      return `data:${getMimeType(extension)};base64,${data}`;
+    });
   }
+
+  return []
 };
 
 export const getMimeType = (extension: string | undefined) => {

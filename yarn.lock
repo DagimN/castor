@@ -5962,6 +5962,11 @@ path-type@^4.0.0:
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
+pdf-poppler@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/pdf-poppler/-/pdf-poppler-0.2.2.tgz#3b43c35f156e229121041870039401b643a8167e"
+  integrity sha512-HCZ3UxErVO4TWBUyR6elSmazGOos3dkPD0eYy700f+cOt6o3Y0QMszGSEOWIyk5VcLTOq799fNkFSpjqhjUqmQ==
+
 pe-library@^0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/pe-library/-/pe-library-0.4.1.tgz#e269be0340dcb13aa6949d743da7d658c3e2fbea"
@@ -6222,6 +6227,11 @@ react-router@7.8.2:
   dependencies:
     cookie "^1.0.1"
     set-cookie-parser "^2.6.0"
+
+react-spinners@^0.17.0:
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/react-spinners/-/react-spinners-0.17.0.tgz#d518913e2192afaae76c5b781929ea3bd7b1910e"
+  integrity sha512-L/8HTylaBmIWwQzIjMq+0vyaRXuoAevzWoD35wKpNTxxtYXWZp+xtgkfD7Y4WItuX0YvdxMPU79+7VhhmbmuTQ==
 
 react@^19.1.1:
   version "19.1.1"

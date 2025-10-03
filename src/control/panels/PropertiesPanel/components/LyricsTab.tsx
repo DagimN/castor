@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useMediaStore } from "../../../../stores/mediaStore";
 import {
   getMimeType,
-  loadFile,
 } from "../../../../control/utils/file_functions";
-import { FaSearch, FaSpinner } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
+import { ClipLoader } from "react-spinners";
 
 const LyricsTab = () => {
   const { files } = useMediaStore();
@@ -16,33 +16,24 @@ const LyricsTab = () => {
   const [backgroundImage, setBackgroundImage] = useState<string | undefined>();
   const [text, setText] = useState<string | undefined>();
 
-  useEffect(() => {
-    if (backgroundImage) {
-      loadFile(backgroundImage).then((base64) => {
-        setSource(base64);
-      });
-    } else {
-      setSource(undefined);
-    }
-  }, [backgroundImage]);
-
   const fetchLyrics = async () => {
     if (!lyricsUrl) return;
 
     setIsFetching(true);
     const firstData = await window.electron.fetchWebsite(lyricsUrl, "div.poem");
-    console.log(firstData);
+    setIsFetching(false);
+
     if (firstData.length > 0) {
-      setIsFetching(false);
-      const lyrics = firstData[0].split("<br>\n<br>").map(
-        (lyric: string) =>
+      const lyrics = firstData[0]
+        .split("<br>\n<br>")
+        .map((lyric: string) =>
           lyric
             .replaceAll(
               '<span class="mw-poem-indented" style="display: inline-block; margin-left: 2em;">',
               ""
             )
             .replaceAll("</span>", "")
-      );
+        );
       setLyrics(lyrics);
       return;
     }
@@ -52,7 +43,7 @@ const LyricsTab = () => {
       "div.mw-parser-output"
     );
     setIsFetching(false);
-    console.log(secondData);
+
     if (secondData.length > 0) {
       const lyrics = secondData[0].split("<p><br>\n</p>");
       setLyrics(lyrics);
@@ -77,9 +68,9 @@ const LyricsTab = () => {
         <button
           disabled={isFetching}
           onClick={fetchLyrics}
-          className="absolute right-2 bg-teal-500 hover:bg-teal-600 active:bg-teal-400 p-3 rounded-full cursor-pointer mt-1"
+          className="absolute right-2 bg-teal-500 hover:bg-teal-600 active:bg-teal-400 w-10 h-10 rounded-full cursor-pointer mt-1"
         >
-          {isFetching ? <FaSpinner /> : <FaSearch />}
+          {isFetching ? <ClipLoader size={12} /> : <FaSearch className="m-3" />}
         </button>
       </div>
       <textarea
@@ -106,7 +97,12 @@ const LyricsTab = () => {
       <select
         name="background"
         value={backgroundImage}
-        onChange={(e) => setBackgroundImage(e.target.value)}
+        onChange={(e) => {
+          setBackgroundImage(e.target.value);
+          setSource(
+            files.find((file) => file.path === e.target.value)?.source[0]
+          );
+        }}
         className="w-full text-teal-500"
       >
         <option value={undefined} className="text-black">
@@ -114,11 +110,13 @@ const LyricsTab = () => {
         </option>
         {files
           .filter((file) =>
-            getMimeType(file.split(".").pop()?.toLowerCase()).includes("image")
+            getMimeType(file.path.split(".").pop()?.toLowerCase()).includes(
+              "image"
+            )
           )
           .map((file) => (
-            <option value={file} key={file} className="text-black">
-              {file}
+            <option value={file.path} key={file.path} className="text-black">
+              {file.path}
             </option>
           ))}
       </select>

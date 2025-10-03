@@ -1,18 +1,29 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+export type MediaFile = {
+  path: string;
+  source: string[];
+};
+
 export const useMediaStore = create<{
-  files: string[];
+  files: MediaFile[];
   selectedFile?: string;
-  setFiles: (files: string[]) => void;
-  setSelectedFile: (file: string | undefined) => void;
+  selectedSource?: string[];
+  setFiles: (files: MediaFile[]) => void;
+  setSelectedFile: (
+    file: string | undefined,
+    source: string[] | undefined
+  ) => void;
 }>()(
   persist(
     (set) => ({
       files: [],
       selectedFile: undefined,
+      selectedSource: undefined,
       setFiles: (files) => set({ files }),
-      setSelectedFile: (file) => set({ selectedFile: file }),
+      setSelectedFile: (file, source) =>
+        set({ selectedFile: file, selectedSource: source }),
     }),
     {
       name: "media-store",

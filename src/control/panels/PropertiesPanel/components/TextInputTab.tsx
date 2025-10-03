@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useMediaStore } from "../../../../stores/mediaStore";
 import {
   getMimeType,
-  loadFile,
 } from "../../../../control/utils/file_functions";
 import { FaAlignCenter, FaAlignLeft, FaAlignRight } from "react-icons/fa";
 
@@ -22,16 +21,6 @@ const TextInputTab = () => {
     textAlign: "center",
     fontWeight: "bold",
   });
-
-  useEffect(() => {
-    if (backgroundImage) {
-      loadFile(backgroundImage).then((base64) => {
-        setSource(base64);
-      });
-    } else {
-      setSource(undefined);
-    }
-  }, [backgroundImage]);
 
   return (
     <section className="px-8 overflow-auto h-[90%]">
@@ -89,7 +78,12 @@ const TextInputTab = () => {
       <select
         name="background"
         value={backgroundImage}
-        onChange={(e) => setBackgroundImage(e.target.value)}
+        onChange={(e) => {
+          setBackgroundImage(e.target.value);
+          setSource(
+            files.find((file) => file.path === e.target.value)?.source[0]
+          );
+        }}
         className="w-full text-teal-500"
       >
         <option value={undefined} className="text-black">
@@ -97,11 +91,11 @@ const TextInputTab = () => {
         </option>
         {files
           .filter((file) =>
-            getMimeType(file.split(".").pop()?.toLowerCase()).includes("image")
+            getMimeType(file.path.split(".").pop()?.toLowerCase()).includes("image")
           )
           .map((file) => (
-            <option value={file} key={file} className="text-black">
-              {file}
+            <option value={file.path} key={file.path} className="text-black">
+              {file.path}
             </option>
           ))}
       </select>

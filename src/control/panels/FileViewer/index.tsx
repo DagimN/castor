@@ -1,7 +1,11 @@
-import { useMediaStore } from "../../../stores/mediaStore";
+import { loadFile } from "../../utils/file_functions";
+import { MediaFile, useMediaStore } from "../../../stores/mediaStore";
 import FileTile from "./components/FileTile";
+import { useState } from "react";
+import { ClipLoader } from "react-spinners";
 
 const FileViewer = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const { setFiles, files } = useMediaStore();
 
   return (
@@ -9,21 +13,30 @@ const FileViewer = () => {
       <button
         className="rounded-xl bg-teal-700 px-4 py-2 m-4 hover:bg-teal-600 text-white font-bold cursor-pointer"
         onClick={async () => {
-          if (window.electron) {
-            const newFiles = await window.electron.openFileDialog();
-            if (newFiles && newFiles.length > 0) {
-              setFiles([...newFiles, ...files]);
-            }
-          } else {
-            console.error("Electron API is missing");
+          setIsLoading(true);
+          const loadedAssets = await window.electron.openFileDialog();
+          const newFiles: MediaFile[] = [];
+
+          for (const filePath of loadedAssets) {
+            const source = await loadFile(filePath);
+            newFiles.push({ path: filePath, source });
           }
+
+          if (newFiles && newFiles.length > 0) {
+            setFiles([...newFiles, ...files]);
+          }
+          setIsLoading(false);
         }}
       >
-        Add Files
+        {isLoading ? <ClipLoader size={12} /> : "Add Files"}
       </button>
       <ul className="flex gap-4 p-4 overflow-x-auto">
         {files.map((file, index) => (
-          <FileTile key={`file-${index}`} filePath={file} />
+          <FileTile
+            key={`file-${index}`}
+            filePath={file.path}
+            source={file.source}
+          />
         ))}
       </ul>
     </section>

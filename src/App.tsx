@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom/client";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, HashRouter } from "react-router-dom";
 import "./styles/index.css";
 import ControlPanel from "./control";
 import Projector from "./projector";
