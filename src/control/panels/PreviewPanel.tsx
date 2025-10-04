@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useMediaStore } from "../../stores/mediaStore";
 import { FaChevronLeft, FaChevronRight, FaPlay } from "react-icons/fa";
 import { TiArrowLoop } from "react-icons/ti";
+import { MdSettingsRemote } from "react-icons/md";
 
 const PreviewPanel = () => {
   const [isLooped, setIsLooped] = useState(false);
@@ -103,6 +104,16 @@ const PreviewPanel = () => {
                 <span className="bg-black/25 rounded-full px-4 py-1 text-white text-sm w-min">
                   {sourceIndex + 1}/{selectedSource.length}
                 </span>
+                <button
+                  className="bg-teal-500 p-3 rounded-full cursor-pointer"
+                  onClick={() => {
+                    window.electron.openProjectorWindow();
+
+                    window.electron.setRemoteImages(selectedSource);
+                  }}
+                >
+                  <MdSettingsRemote />
+                </button>
               </aside>
             )}
 

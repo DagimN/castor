@@ -34,6 +34,7 @@ declare global {
       fetchVideoMetadata: (filePath: string) => Promise<any>;
       fetchWebsite: (url: string, selector?: string) => Promise<any>;
       getLocalIP: () => Promise<string>;
+      setRemoteImages: (images: string[]) => void;
     };
   }
 }

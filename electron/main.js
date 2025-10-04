@@ -34,6 +34,8 @@ server.put("/remote", (req, res) => {
   const { index } = req.query;
   selectedIndex = index;
 
+  projectorWindow.webContents.send("media-update", images[index]);
+
   res.sendStatus(200);
 });
 
@@ -256,4 +258,12 @@ ipcMain.handle("get-local-ip", () => {
       }
     }
   }
+});
+
+ipcMain.handle("set-remote-images", (event, imgs) => {
+  images = imgs;
+
+  setTimeout(() => {
+    projectorWindow.webContents.send("media-update", imgs[0]);
+  }, 1000);
 });
