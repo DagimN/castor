@@ -3,8 +3,20 @@ import { useMediaStore } from "../../stores/mediaStore";
 import { FaChevronLeft, FaChevronRight, FaPlay } from "react-icons/fa";
 import { TiArrowLoop } from "react-icons/ti";
 import { MdSettingsRemote } from "react-icons/md";
+import QRCode from "qrcode";
+import { IoClose } from "react-icons/io5";
 
-const PreviewPanel = () => {
+const PreviewPanel = ({
+  qr,
+  localUrl,
+  setQr,
+  setLocalUrl,
+}: {
+  qr: string | undefined;
+  localUrl: string | undefined;
+  setQr: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setLocalUrl: React.Dispatch<React.SetStateAction<string | undefined>>;
+}) => {
   const [isLooped, setIsLooped] = useState(false);
   const { selectedSource } = useMediaStore();
   const [sourceIndex, setSourceIndex] = useState(0);
@@ -45,10 +57,15 @@ const PreviewPanel = () => {
               onTimeUpdate={(e) => handleSeek(e.currentTarget.currentTime)}
             />
           ) : (
-            <img
-              src={selectedSource[sourceIndex]}
-              className="aspect-auto h-full"
-            />
+            <div className="h-full relative flex justify-center">
+              <img
+                src={qr ?? selectedSource[sourceIndex]}
+                className="aspect-auto h-full"
+              />
+              {localUrl && (
+                <h1 className="absolute bottom-2 text-center">{localUrl}</h1>
+              )}
+            </div>
           )}
 
           <div className="absolute top-0 right-5 my-4 grid gap-4 justify-items-end">
@@ -69,7 +86,7 @@ const PreviewPanel = () => {
               <FaPlay />
             </button>
             {selectedSource.length > 1 && (
-              <aside className="grid gap-4 justify-items-end">
+              <aside className="grid gap-4 justify-items-end text-white">
                 <div className="flex gap-2">
                   <button
                     className="bg-teal-500 p-3 rounded-full cursor-pointer"
@@ -106,13 +123,24 @@ const PreviewPanel = () => {
                 </span>
                 <button
                   className="bg-teal-500 p-3 rounded-full cursor-pointer"
-                  onClick={() => {
-                    window.electron.openProjectorWindow();
+                  onClick={async () => {
+                    if (!qr) {
+                      const localIp = await window.electron.getLocalIP();
+                      const url = `http://${localIp}:3000/remote`;
+                      const qrImage = await QRCode.toDataURL(url);
 
-                    window.electron.setRemoteImages(selectedSource);
+                      setLocalUrl(url);
+                      setQr(qrImage);
+
+                      window.electron.openProjectorWindow();
+                      window.electron.setRemoteImages(selectedSource);
+                    } else {
+                      setLocalUrl(undefined);
+                      setQr(undefined);
+                    }
                   }}
                 >
-                  <MdSettingsRemote />
+                  {qr ? <IoClose /> : <MdSettingsRemote />}
                 </button>
               </aside>
             )}

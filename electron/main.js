@@ -73,6 +73,8 @@ const createWindow = () => {
     mainWindow.loadURL("http://localhost:5173");
   }
 
+  mainWindow.maximize();
+
   mainWindow.on("close", (event) => {
     projectorWindow?.destroy();
     projectorWindow = undefined;
@@ -223,6 +225,8 @@ ipcMain.on("open-projector-window", () => {
 ipcMain.on("close-projector-window", () => {
   projectorWindow?.destroy();
   projectorWindow = undefined;
+  images = [];
+  selectedIndex = 0;
 });
 
 ipcMain.on("video-control", (_event, { command, payload }) => {
