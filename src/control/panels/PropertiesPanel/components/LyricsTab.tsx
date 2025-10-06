@@ -87,7 +87,10 @@ const LyricsTab = () => {
         className="rounded-lg bg-teal-500 px-3 py-1 float-right mt-1"
         onClick={() => {
           if (text) {
-            setLyrics((prev) => [...prev, text]);
+            setLyrics((prev) => [
+              ...prev,
+              text.trim().replaceAll("\n", "<br />"),
+            ]);
           }
         }}
       >
