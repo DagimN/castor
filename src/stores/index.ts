@@ -1,4 +1,4 @@
 import { useContentStore } from "./contentStore";
-import { useMediaStore, MediaFile } from "./mediaStore";
+import { useMediaStore } from "./mediaStore";
 
-export { useContentStore, useMediaStore, MediaFile  }
+export { useContentStore, useMediaStore  }

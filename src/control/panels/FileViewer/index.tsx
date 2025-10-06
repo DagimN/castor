@@ -1,8 +1,9 @@
 import { loadFile } from "../../utils/file_functions";
-import { MediaFile, useMediaStore } from "../../../stores";
+import { useMediaStore } from "../../../stores";
 import FileTile from "./components/FileTile";
 import { useState } from "react";
 import { ClipLoader } from "react-spinners";
+import { MediaFile } from "../../../stores/mediaStore";
 
 const FileViewer = () => {
   const [isLoading, setIsLoading] = useState(false);
