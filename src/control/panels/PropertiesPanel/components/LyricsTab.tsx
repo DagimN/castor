@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useMediaStore } from "../../../../stores/mediaStore";
+import { useMediaStore } from "../../../../stores";
 import { getMimeType } from "../../../../control/utils/file_functions";
 import { FaSearch } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { ClipLoader } from "react-spinners";
-import { useContentStore } from "../../../../stores/contentStore";
+import { useContentStore } from "../../../../stores";
 import TextStyleControl from "./TextStyleControl";
 
 const LyricsTab = () => {

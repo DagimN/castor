@@ -1,4 +1,4 @@
-import { useMediaStore } from "../../../../stores/mediaStore";
+import { useMediaStore } from "../../../../stores";
 import { IoClose } from "react-icons/io5";
 
 const FileTile = ({

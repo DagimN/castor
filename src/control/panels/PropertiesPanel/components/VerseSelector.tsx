@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { nasv, nasb, am54 } from "../../../../assets/data";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { useMediaStore } from "../../../../stores/mediaStore";
+import { useMediaStore } from "../../../../stores";
 import { getMimeType } from "../../../utils/file_functions";
-import { useContentStore } from "../../../../stores/contentStore";
+import { useContentStore } from "../../../../stores";
 import TextStyleControl from "./TextStyleControl";
 
 const VerseSelector = () => {

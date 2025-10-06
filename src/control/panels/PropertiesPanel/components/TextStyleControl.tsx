@@ -1,5 +1,5 @@
 import { FaAlignCenter, FaAlignLeft, FaAlignRight } from "react-icons/fa";
-import { useContentStore } from "../../../../stores/contentStore";
+import { useContentStore } from "../../../../stores";
 
 const TextStyleControl = () => {
   const { textStyles, setTextStyles } = useContentStore();

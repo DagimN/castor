@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useMediaStore } from "../../stores/mediaStore";
+import { useMediaStore } from "../../stores";
 import { FaChevronLeft, FaChevronRight, FaPlay } from "react-icons/fa";
 import { TiArrowLoop } from "react-icons/ti";
 import { MdSettingsRemote } from "react-icons/md";

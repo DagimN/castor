@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useMediaStore } from "../../../../stores/mediaStore";
+import { useMediaStore } from "../../../../stores";
 import { getMimeType } from "../../../../control/utils/file_functions";
-import { useContentStore } from "../../../../stores/contentStore";
+import { useContentStore } from "../../../../stores";
 import TextStyleControl from "./TextStyleControl";
 
 const TextInputTab = () => {

@@ -1,4 +1,4 @@
-import { useMediaStore } from "../../../../stores/mediaStore";
+import { useMediaStore } from "../../../../stores";
 import { getMimeType } from "../../../utils/file_functions";
 import { useEffect, useState } from "react";
 
