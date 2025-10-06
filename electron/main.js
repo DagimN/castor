@@ -8,7 +8,9 @@ import * as cheerio from "cheerio";
 import express from "express";
 import os from "os";
 import { convert } from "pdf-poppler";
+import pkg from "electron-updater";
 
+const { autoUpdater } = pkg;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 let projectorWindow = undefined;
@@ -74,6 +76,7 @@ const createWindow = () => {
   }
 
   mainWindow.maximize();
+  autoUpdater.checkForUpdatesAndNotify();
 
   mainWindow.on("close", (event) => {
     projectorWindow?.destroy();
@@ -143,6 +146,27 @@ app.on("activate", () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
+});
+
+autoUpdater.on("update-available", () => {
+  dialog.showMessageBox({
+    type: "info",
+    title: "Update Available",
+    message: "A new version is available. Downloading now...",
+  });
+});
+
+autoUpdater.on("update-downloaded", () => {
+  dialog
+    .showMessageBox({
+      type: "info",
+      title: "Update Ready",
+      message: "A new version has been downloaded. Restart now to install?",
+      buttons: ["Restart", "Later"],
+    })
+    .then((result) => {
+      if (result.response === 0) autoUpdater.quitAndInstall();
+    });
 });
 
 // In this file you can include the rest of your app's specific main process
