@@ -9,16 +9,16 @@ contextBridge.exposeInMainWorld("electron", {
   sendMediaToProjector: (base64, verse, styles) => {
     ipcRenderer.send("media-update", base64, verse, styles);
   },
-  sendLyricToProjector: (base64, lyric) => {
-    ipcRenderer.send("lyric-update", base64, lyric);
+  sendLyricToProjector: (base64, lyric, styles) => {
+    ipcRenderer.send("lyric-update", base64, lyric, styles);
   },
   onMediaUpdate: (callback) =>
     ipcRenderer.on("media-update", (_, newSource, verse, styles) => {
       callback(newSource, verse, styles);
     }),
   onLyricUpdate: (callback) =>
-    ipcRenderer.on("lyric-update", (_, newSource, lyric) => {
-      callback(newSource, lyric);
+    ipcRenderer.on("lyric-update", (_, newSource, lyric, styles) => {
+      callback(newSource, lyric, styles);
     }),
   onVideoCommand: (callback) =>
     ipcRenderer.on("video-control", (_, { command, payload }) => {

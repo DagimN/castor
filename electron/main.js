@@ -214,8 +214,8 @@ ipcMain.on("media-update", (_, newSource, verse, styles) => {
   projectorWindow?.webContents.send("media-update", newSource, verse, styles);
 });
 
-ipcMain.on("lyric-update", (_, newSource, verse) => {
-  projectorWindow?.webContents.send("lyric-update", newSource, verse);
+ipcMain.on("lyric-update", (_, newSource, verse, styles) => {
+  projectorWindow?.webContents.send("lyric-update", newSource, verse, styles);
 });
 
 ipcMain.on("open-projector-window", () => {

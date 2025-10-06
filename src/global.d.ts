@@ -12,11 +12,11 @@ declare global {
         verse?: string,
         styles?: string
       ) => Promise<string>;
-      sendLyricToProjector: (base64, lyric?: string) => Promise<string>;
+      sendLyricToProjector: (base64, lyric?: string, styles?: string) => Promise<string>;
       onMediaUpdate: (
         callback: (newSource: string, verse?: string, styles?: string) => void
       ) => void;
-      onLyricUpdate: (callback: (newSource: string) => void) => void;
+      onLyricUpdate: (callback: (newSource: string, lyric?: string, styles?: string) => void) => void;
       removeMediaUpdateListener: (
         callback: (newSource: string) => void
       ) => void;

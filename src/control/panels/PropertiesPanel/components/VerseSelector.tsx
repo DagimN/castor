@@ -3,9 +3,12 @@ import { nasv, nasb, am54 } from "../../../../assets/data";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { useMediaStore } from "../../../../stores/mediaStore";
 import { getMimeType } from "../../../utils/file_functions";
+import { useContentStore } from "../../../../stores/contentStore";
+import TextStyleControl from "./TextStyleControl";
 
 const VerseSelector = () => {
   const { files } = useMediaStore();
+  const { textStyles } = useContentStore();
   const [source, setSource] = useState<string | undefined>();
   const [translation, setTranslation] = useState<"NASV" | "NASB" | "AM54">(
     "NASV"
@@ -101,7 +104,8 @@ const VerseSelector = () => {
               setVerseIndex(updatedIndex);
               window.electron.sendMediaToProjector(
                 source,
-                `"${bible[bookIndex].chapters[chapterIndex][updatedIndex]}" ${bible[bookIndex].abbrev} ${chapterIndex + 1}:${updatedIndex + 1}`
+                `"${bible[bookIndex].chapters[chapterIndex][updatedIndex]}" ${bible[bookIndex].abbrev} ${chapterIndex + 1}:${updatedIndex + 1}`,
+                `text-${textStyles.color} text-[${textStyles.fontSize}px] ${textStyles.textAlign} font-bold`
               );
             }
           }}
@@ -119,7 +123,8 @@ const VerseSelector = () => {
               setVerseIndex(updatedIndex);
               window.electron.sendMediaToProjector(
                 source,
-                `"${bible[bookIndex].chapters[chapterIndex][updatedIndex]}" ${bible[bookIndex].abbrev} ${chapterIndex + 1}:${updatedIndex + 1}`
+                `"${bible[bookIndex].chapters[chapterIndex][updatedIndex]}" ${bible[bookIndex].abbrev} ${chapterIndex + 1}:${updatedIndex + 1}`,
+                `text-${textStyles.color} text-[${textStyles.fontSize}px] ${textStyles.textAlign} font-bold`
               );
             }
           }}
@@ -130,6 +135,7 @@ const VerseSelector = () => {
       <h1 className="mt-10 text-white text-center font-[noto]">
         "{bible[bookIndex].chapters[chapterIndex][verseIndex]}"
       </h1>
+      <TextStyleControl /> 
       <h1 className="mt-20 text-teal-500 font-bold">
         Select Background Image:
       </h1>
@@ -167,7 +173,8 @@ const VerseSelector = () => {
           setTimeout(() => {
             window.electron.sendMediaToProjector(
               source,
-              `"${bible[bookIndex].chapters[chapterIndex][verseIndex]}" ${bible[bookIndex].abbrev} ${chapterIndex + 1}:${verseIndex + 1}`
+              `"${bible[bookIndex].chapters[chapterIndex][verseIndex]}" ${bible[bookIndex].abbrev} ${chapterIndex + 1}:${verseIndex + 1}`,
+              `text-${textStyles.color} text-[${textStyles.fontSize}px] ${textStyles.textAlign} font-bold`
             );
           }, 300);
         }}

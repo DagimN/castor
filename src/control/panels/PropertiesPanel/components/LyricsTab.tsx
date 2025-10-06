@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { useMediaStore } from "../../../../stores/mediaStore";
-import {
-  getMimeType,
-} from "../../../../control/utils/file_functions";
+import { getMimeType } from "../../../../control/utils/file_functions";
 import { FaSearch } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { ClipLoader } from "react-spinners";
+import { useContentStore } from "../../../../stores/contentStore";
+import TextStyleControl from "./TextStyleControl";
 
 const LyricsTab = () => {
   const { files } = useMediaStore();
+  const { textStyles } = useContentStore();
   const [lyricsUrl, setLyricsUrl] = useState<string | undefined>();
   const [lyrics, setLyrics] = useState<string[]>([]);
   const [source, setSource] = useState<string | undefined>();
@@ -73,6 +74,7 @@ const LyricsTab = () => {
           {isFetching ? <ClipLoader size={12} /> : <FaSearch className="m-3" />}
         </button>
       </div>
+      <TextStyleControl />
       <textarea
         name=""
         id=""
@@ -126,7 +128,11 @@ const LyricsTab = () => {
         onClick={() => {
           window.electron.openProjectorWindow();
           setTimeout(() => {
-            window.electron.sendLyricToProjector(source, lyrics[0]);
+            window.electron.sendLyricToProjector(
+              source,
+              lyrics[0],
+              `text-${textStyles.color} text-[${textStyles.fontSize}px] ${textStyles.textAlign} font-bold`
+            );
           }, 300);
         }}
       >
@@ -140,7 +146,11 @@ const LyricsTab = () => {
             onClick={() => {
               window.electron.openProjectorWindow();
               setTimeout(() => {
-                window.electron.sendLyricToProjector(source, lyric);
+                window.electron.sendLyricToProjector(
+                  source,
+                  lyric,
+                  `text-${textStyles.color} text-[${textStyles.fontSize}px] ${textStyles.textAlign} font-bold`
+                );
               }, 300);
             }}
             dangerouslySetInnerHTML={{

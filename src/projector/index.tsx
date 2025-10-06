@@ -20,7 +20,7 @@ const Projector = () => {
     setLyric(undefined);
 
     if (styles) {
-      setTextStyles(styles);  
+      setTextStyles(styles);
     }
   };
 
@@ -33,10 +33,18 @@ const Projector = () => {
   }, [textStyles]);
 
   useEffect(() => {
-    const handleUpdate = (newSource: string, newLyric?: string) => {
+    const handleUpdate = (
+      newSource: string,
+      newLyric?: string,
+      styles?: string
+    ) => {
       setSource(newSource);
       setLyric(newLyric);
       setVerse(undefined);
+
+      if (styles) {
+        setTextStyles(styles);
+      }
     };
 
     window.electron.onLyricUpdate(handleUpdate);
@@ -109,14 +117,18 @@ const Projector = () => {
           className="aspect-auto h-screen flex justify-center absolute z-10"
         />
       )}
-      <h1 className={`absolute flex z-20 w-[70%] ${textStyles}`}>{verse}</h1>
+      {verse && (
+        <h1 className={`absolute z-20 w-[70%] ${textStyles}`}>{verse}</h1>
+      )}
 
-      <pre
-        className="text-white text-[44px] text-start font-bold absolute z-20"
-        dangerouslySetInnerHTML={{
-          __html: lyric?.replace(/\s+/g, " ") ?? "",
-        }}
-      />
+      {lyric && (
+        <pre
+          className={`absolute z-20 w-[70%] ${textStyles}`}
+          dangerouslySetInnerHTML={{
+            __html: lyric?.replace(/\s+/g, " ") ?? "",
+          }}
+        />
+      )}
     </main>
   );
 };
