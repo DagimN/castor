@@ -26,10 +26,13 @@ server.listen(3000, () => {
 });
 
 server.get("/remote", (_, res) => {
-  res.render("remote", {
-    images,
-    selectedIndex,
-  });
+  res.render(
+    app.isPackaged ? path.join(__dirname, "../views/remote") : "remote",
+    {
+      images,
+      selectedIndex,
+    }
+  );
 });
 
 server.put("/remote", (req, res) => {
