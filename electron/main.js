@@ -1,4 +1,11 @@
-import { app, BrowserWindow, ipcMain, dialog, screen } from "electron";
+import {
+  app,
+  BrowserWindow,
+  ipcMain,
+  dialog,
+  screen,
+  globalShortcut,
+} from "electron";
 import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
@@ -13,9 +20,10 @@ import pkg from "electron-updater";
 const { autoUpdater } = pkg;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-let projectorWindow = undefined;
-
 const server = express();
+
+let projectorWindow = undefined;
+let mainWindow = undefined;
 let selectedIndex = 0;
 let images = [];
 
@@ -62,7 +70,7 @@ checkSquirrel();
 
 const createWindow = () => {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     height: 600,
     width: 800,
     icon: "./public/logo-mini.png",
@@ -84,6 +92,7 @@ const createWindow = () => {
   mainWindow.on("close", (event) => {
     projectorWindow?.destroy();
     projectorWindow = undefined;
+    mainWindow = undefined;
   });
 };
 
@@ -127,7 +136,17 @@ const createProjectorWindow = () => {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on("ready", createWindow);
+app.on("ready", () => {
+  createWindow();
+
+  globalShortcut.register("PageDown", () => {
+    mainWindow.webContents.send("slide-update", "previous");
+  });
+
+  globalShortcut.register("PageUp", () => {
+    mainWindow.webContents.send("slide-update", "next");
+  });
+});
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits

@@ -29,6 +29,24 @@ const PreviewPanel = ({
     }
   }, [selectedSource]);
 
+  useEffect(() => {
+    const handleUpdate = (nav: string) => {
+      if (nav === "next") {
+        handleNextSlide();
+      }
+
+      if (nav === "previous") {
+        handlePreviousSlide();
+      }
+    };
+
+    window.electron.onSlideUpdate(handleUpdate);
+
+    return () => {
+      window.electron.removeSlideUpdateListener(handleUpdate);
+    };
+  }, [sourceIndex]);
+
   const handlePlay = () => {
     window.electron.sendVideoCommand("play");
   };
@@ -39,6 +57,28 @@ const PreviewPanel = ({
 
   const handleSeek = (time: number) => {
     window.electron.sendVideoCommand("seek", time);
+  };
+
+  const handleNextSlide = () => {
+    if (sourceIndex < (selectedSource ?? []).length - 1) {
+      const updatedIndex = sourceIndex + 1;
+      setSourceIndex(updatedIndex);
+
+      window.electron.sendMediaToProjector(
+        (selectedSource ?? [])[updatedIndex]
+      );
+    }
+  };
+
+  const handlePreviousSlide = () => {
+    if (sourceIndex > 0) {
+      const updatedIndex = sourceIndex - 1;
+      setSourceIndex(updatedIndex);
+
+      window.electron.sendMediaToProjector(
+        (selectedSource ?? [])[updatedIndex]
+      );
+    }
   };
 
   return (
@@ -90,29 +130,13 @@ const PreviewPanel = ({
                 <div className="flex gap-2">
                   <button
                     className="bg-teal-500 p-3 rounded-full cursor-pointer"
-                    onClick={() => {
-                      if (sourceIndex > 0) {
-                        const updatedIndex = sourceIndex - 1;
-                        setSourceIndex(updatedIndex);
-                        window.electron.sendMediaToProjector(
-                          selectedSource[updatedIndex]
-                        );
-                      }
-                    }}
+                    onClick={handlePreviousSlide}
                   >
                     <FaChevronLeft />
                   </button>
                   <button
                     className="bg-teal-500 p-3 rounded-full cursor-pointer"
-                    onClick={() => {
-                      if (sourceIndex < selectedSource.length - 1) {
-                        const updatedIndex = sourceIndex + 1;
-                        setSourceIndex(updatedIndex);
-                        window.electron.sendMediaToProjector(
-                          selectedSource[updatedIndex]
-                        );
-                      }
-                    }}
+                    onClick={handleNextSlide}
                   >
                     <FaChevronRight />
                   </button>

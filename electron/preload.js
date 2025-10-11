@@ -20,6 +20,10 @@ contextBridge.exposeInMainWorld("electron", {
     ipcRenderer.on("lyric-update", (_, newSource, lyric, styles) => {
       callback(newSource, lyric, styles);
     }),
+  onSlideUpdate: (callback) =>
+    ipcRenderer.on("slide-update", (_, nav) => {
+      callback(nav);
+    }),
   onVideoCommand: (callback) =>
     ipcRenderer.on("video-control", (_, { command, payload }) => {
       callback({ command, payload });
@@ -29,6 +33,9 @@ contextBridge.exposeInMainWorld("electron", {
   },
   removeLyricUpdateListener: (callback) => {
     ipcRenderer.removeListener("lyric-update", callback);
+  },
+  removeSlideUpdateListener: (callback) => {
+    ipcRenderer.removeListener("slide-update", callback);
   },
   removeVideoCommandListener: (callback) => {
     ipcRenderer.removeListener("video-control", callback);
@@ -42,6 +49,6 @@ contextBridge.exposeInMainWorld("electron", {
     ipcRenderer.invoke("fetch-video-metadata", filePath),
   fetchWebsite: (url, selector) =>
     ipcRenderer.invoke("fetch-website", url, selector),
-  getLocalIP: () => ipcRenderer.invoke('get-local-ip'),
-  setRemoteImages: (images) => ipcRenderer.invoke('set-remote-images', images)
+  getLocalIP: () => ipcRenderer.invoke("get-local-ip"),
+  setRemoteImages: (images) => ipcRenderer.invoke("set-remote-images", images),
 });

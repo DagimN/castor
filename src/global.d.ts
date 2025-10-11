@@ -17,11 +17,15 @@ declare global {
         callback: (newSource: string, verse?: string, styles?: string) => void
       ) => void;
       onLyricUpdate: (callback: (newSource: string, lyric?: string, styles?: string) => void) => void;
+      onSlideUpdate: (callback: (nav: string) => void) => void;
       removeMediaUpdateListener: (
         callback: (newSource: string) => void
       ) => void;
       removeLyricUpdateListener: (
         callback: (newSource: string) => void
+      ) => void;
+      removeSlideUpdateListener: (
+        callback: (nav: string) => void
       ) => void;
       sendVideoCommand: (command: string, payload?: any) => void;
       onVideoCommand: (
