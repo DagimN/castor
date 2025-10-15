@@ -140,11 +140,11 @@ app.on("ready", () => {
   createWindow();
 
   globalShortcut.register("PageDown", () => {
-    mainWindow.webContents.send("slide-update", "previous");
+    mainWindow.webContents.send("slide-update", "next");
   });
 
   globalShortcut.register("PageUp", () => {
-    mainWindow.webContents.send("slide-update", "next");
+    mainWindow.webContents.send("slide-update", "previous");
   });
 });
 
@@ -171,6 +171,7 @@ app.on("activate", () => {
 });
 
 autoUpdater.on("update-available", () => {
+  //TODO: Show download progress
   dialog.showMessageBox({
     type: "info",
     title: "Update Available",

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useMediaStore } from "../../stores";
 import { FaChevronLeft, FaChevronRight, FaPlay } from "react-icons/fa";
 import { TiArrowLoop } from "react-icons/ti";
@@ -21,7 +21,24 @@ const PreviewPanel = ({
   const { selectedSource } = useMediaStore();
   const [sourceIndex, setSourceIndex] = useState(0);
 
+  const handleUpdate = useCallback(
+    (nav: string) => {
+      if ((selectedSource ?? []).length > 1) {
+        if (nav === "next") {
+          handleNextSlide();
+        }
+
+        if (nav === "previous") {
+          handlePreviousSlide();
+        }
+      }
+    },
+    [sourceIndex, selectedSource]
+  );
+
   useEffect(() => {
+    setSourceIndex(0);
+
     if (selectedSource) {
       window.electron.sendMediaToProjector(selectedSource[sourceIndex]);
     } else {
@@ -30,22 +47,12 @@ const PreviewPanel = ({
   }, [selectedSource]);
 
   useEffect(() => {
-    const handleUpdate = (nav: string) => {
-      if (nav === "next") {
-        handleNextSlide();
-      }
-
-      if (nav === "previous") {
-        handlePreviousSlide();
-      }
-    };
-
     window.electron.onSlideUpdate(handleUpdate);
 
     return () => {
       window.electron.removeSlideUpdateListener(handleUpdate);
     };
-  }, [sourceIndex]);
+  }, [handleUpdate]);
 
   const handlePlay = () => {
     window.electron.sendVideoCommand("play");
@@ -119,7 +126,7 @@ const PreviewPanel = ({
                       selectedSource[sourceIndex]
                     );
                     window.electron.sendVideoCommand("loop", isLooped ? 1 : 0);
-                  }, 300);
+                  }, 1000);
                 }
               }}
             >

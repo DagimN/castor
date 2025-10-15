@@ -20,10 +20,12 @@ contextBridge.exposeInMainWorld("electron", {
     ipcRenderer.on("lyric-update", (_, newSource, lyric, styles) => {
       callback(newSource, lyric, styles);
     }),
-  onSlideUpdate: (callback) =>
+  onSlideUpdate: (callback) => {
+    ipcRenderer.removeAllListeners("slide-update");
     ipcRenderer.on("slide-update", (_, nav) => {
       callback(nav);
-    }),
+    });
+  },
   onVideoCommand: (callback) =>
     ipcRenderer.on("video-control", (_, { command, payload }) => {
       callback({ command, payload });
