@@ -12,11 +12,17 @@ declare global {
         verse?: string,
         styles?: string
       ) => Promise<string>;
-      sendLyricToProjector: (base64, lyric?: string, styles?: string) => Promise<string>;
+      sendLyricToProjector: (
+        base64,
+        lyric?: string,
+        styles?: string
+      ) => Promise<string>;
       onMediaUpdate: (
         callback: (newSource: string, verse?: string, styles?: string) => void
       ) => void;
-      onLyricUpdate: (callback: (newSource: string, lyric?: string, styles?: string) => void) => void;
+      onLyricUpdate: (
+        callback: (newSource: string, lyric?: string, styles?: string) => void
+      ) => void;
       onSlideUpdate: (callback: (nav: string) => void) => void;
       removeMediaUpdateListener: (
         callback: (newSource: string) => void
@@ -24,9 +30,7 @@ declare global {
       removeLyricUpdateListener: (
         callback: (newSource: string) => void
       ) => void;
-      removeSlideUpdateListener: (
-        callback: (nav: string) => void
-      ) => void;
+      removeSlideUpdateListener: (callback: (nav: string) => void) => void;
       sendVideoCommand: (command: string, payload?: any) => void;
       onVideoCommand: (
         callback: (args: { command: string; payload: number }) => void
@@ -39,6 +43,10 @@ declare global {
       fetchWebsite: (url: string, selector?: string) => Promise<any>;
       getLocalIP: () => Promise<string>;
       setRemoteImages: (images: string[]) => void;
+      onDownloadProgress: (callback: (progress: number) => void) => void;
+      removeDownloadProgressListener: (
+        callback: (progress: number) => void
+      ) => void;
     };
   }
 }

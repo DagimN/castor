@@ -179,6 +179,11 @@ autoUpdater.on("update-available", () => {
   });
 });
 
+autoUpdater.on('download-progress', (progressObj) => {
+  const percent = Math.round(progressObj.percent);
+  mainWindow.webContents.send('download_progress', percent);
+});
+
 autoUpdater.on("update-downloaded", () => {
   dialog
     .showMessageBox({

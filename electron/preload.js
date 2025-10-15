@@ -53,4 +53,6 @@ contextBridge.exposeInMainWorld("electron", {
     ipcRenderer.invoke("fetch-website", url, selector),
   getLocalIP: () => ipcRenderer.invoke("get-local-ip"),
   setRemoteImages: (images) => ipcRenderer.invoke("set-remote-images", images),
+  onDownloadProgress: (callback) =>
+    ipcRenderer.on("download_progress", (_, progress) => callback(progress)),
 });
