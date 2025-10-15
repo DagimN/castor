@@ -26,6 +26,8 @@ contextBridge.exposeInMainWorld("electron", {
       callback(nav);
     });
   },
+  onSourceIndexUpdate: (callback) =>
+    ipcRenderer.on("source-index-update", (_, index) => callback(index)),
   onVideoCommand: (callback) =>
     ipcRenderer.on("video-control", (_, { command, payload }) => {
       callback({ command, payload });
@@ -38,6 +40,9 @@ contextBridge.exposeInMainWorld("electron", {
   },
   removeSlideUpdateListener: (callback) => {
     ipcRenderer.removeListener("slide-update", callback);
+  },
+  removeSourceIndexUpdateListener: (callback) => {
+    ipcRenderer.removeListener("source-index-update", callback)
   },
   removeVideoCommandListener: (callback) => {
     ipcRenderer.removeListener("video-control", callback);

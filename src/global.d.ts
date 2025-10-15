@@ -24,6 +24,7 @@ declare global {
         callback: (newSource: string, lyric?: string, styles?: string) => void
       ) => void;
       onSlideUpdate: (callback: (nav: string) => void) => void;
+      onSourceIndexUpdate: (callback: (index: number) => void) => void;
       removeMediaUpdateListener: (
         callback: (newSource: string) => void
       ) => void;
@@ -31,6 +32,7 @@ declare global {
         callback: (newSource: string) => void
       ) => void;
       removeSlideUpdateListener: (callback: (nav: string) => void) => void;
+      removeSourceIndexUpdateListener: (callback: (index: number) => void) => void;
       sendVideoCommand: (command: string, payload?: any) => void;
       onVideoCommand: (
         callback: (args: { command: string; payload: number }) => void

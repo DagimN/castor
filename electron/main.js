@@ -48,6 +48,7 @@ server.put("/remote", (req, res) => {
   selectedIndex = index;
 
   projectorWindow.webContents.send("media-update", images[index]);
+  mainWindow.webContents.send("source-index-update", Number.parseInt(index));
 
   res.sendStatus(200);
 });

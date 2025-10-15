@@ -54,6 +54,18 @@ const PreviewPanel = ({
     };
   }, [handleUpdate]);
 
+  useEffect(() => {
+    const handleIndexUpdate = (index: number) => {
+      setSourceIndex(index);
+    }
+
+    window.electron.onSourceIndexUpdate(handleIndexUpdate);
+
+    return () => {
+      window.electron.removeSourceIndexUpdateListener(handleIndexUpdate);
+    };
+  }, [])
+
   const handlePlay = () => {
     window.electron.sendVideoCommand("play");
   };
