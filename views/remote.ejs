@@ -73,18 +73,17 @@
           selectedIndex = Number(newValue)
         }
 
+        document.querySelectorAll(".image-item").forEach((img, index) => {
+          if(index === selectedIndex) {
+            img.classList.add("selected");
+          }else{
+            img.classList.remove("selected");
+          }
+        });
+
         fetch(`/remote?index=${selectedIndex}`, {
           method: "PUT",
-        })
-        .then(res => {
-          document.querySelectorAll(".image-item").forEach((img, index) => {
-            if(index === selectedIndex) {
-              img.classList.add("selected");
-            }else{
-              img.classList.remove("selected");
-            }
-          });
-        })    
+        }) 
         .catch(err => console.error(err));
       }
     </script>
