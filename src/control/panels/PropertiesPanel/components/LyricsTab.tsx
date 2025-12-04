@@ -9,9 +9,9 @@ import TextStyleControl from "./TextStyleControl";
 
 const LyricsTab = () => {
   const { files } = useMediaStore();
-  const { textStyles } = useContentStore();
+  const { textStyles, lyrics, setLyrics } = useContentStore();
   const [lyricsUrl, setLyricsUrl] = useState<string | undefined>();
-  const [lyrics, setLyrics] = useState<string[]>([]);
+  const [lyricsIndex, setLyricsIndex] = useState<number>(0);
   const [source, setSource] = useState<string | undefined>();
   const [isFetching, setIsFetching] = useState(false);
   const [backgroundImage, setBackgroundImage] = useState<string | undefined>();
@@ -87,18 +87,57 @@ const LyricsTab = () => {
         className="rounded-lg bg-teal-500 px-3 py-1 float-right mt-1"
         onClick={() => {
           if (text) {
-            setLyrics((prev) => [
-              ...prev,
-              text.trim().replaceAll("\n", "<br />"),
-            ]);
+            const isEmpty = lyrics.length === 0;
+            const lyric = isEmpty ? [] : lyrics[lyricsIndex];
+
+            const bars = text.trim().split("-");
+
+            for (const bar of bars) {
+              lyric.push(bar.trim().replaceAll("\n", "<br />"));
+            }
+
+            if (isEmpty) {
+              lyrics.push(lyric);
+              setLyrics(lyrics);
+            } else {
+              lyrics[lyricsIndex] = lyric;
+              setLyrics(lyrics);
+            }
           }
         }}
       >
         Add
       </button>
-      <h1 className="mt-20 text-teal-500 font-bold">
-        Select Background Image:
-      </h1>
+      <nav className="flex gap-4 p-4 text-teal-500 my-10 overflow-x-auto">
+        {lyrics.map((_, index) => (
+          <div className="relative group">
+            <h1
+              className={`cursor-pointer px-4 grid items-center ${lyricsIndex === index && "bg-teal-500 text-black rounded-full"}`}
+              onClick={() => setLyricsIndex(index)}
+            >
+              {index + 1}
+            </h1>
+            <button
+              className="absolute top-0 right-0 bg-white z-20 rounded-full group-hover:block hidden cursor-pointer"
+              onClick={() => {
+                setLyrics(lyrics.filter((_, i) => i !== index));
+                setLyricsIndex(0);
+              }}
+            >
+              <IoClose />
+            </button>
+          </div>
+        ))}
+        <h1
+          className={`cursor-pointer px-4 grid items-center bg-teal-500 text-black rounded-full`}
+          onClick={() => {
+            lyrics.push([]);
+            setLyrics(lyrics);
+            setLyricsIndex(lyrics.length - 1);
+          }}
+        ></h1>
+      </nav>
+      <h1 className="text-teal-500 font-bold">Select Background Image:</h1>
       <select
         name="background"
         value={backgroundImage}
@@ -129,45 +168,57 @@ const LyricsTab = () => {
       <button
         className="bg-teal-500 hover:bg-teal-600 text-white my-4 px-4 py-2 rounded-full cursor-pointer"
         onClick={() => {
-          window.electron.openProjectorWindow();
-          setTimeout(() => {
-            window.electron.sendLyricToProjector(
-              source,
-              lyrics[0],
-              `text-${textStyles.color} text-[${textStyles.fontSize}px] ${textStyles.textAlign} font-bold`
-            );
-          }, 300);
+          if (lyrics.length > 0) {
+            window.electron.openProjectorWindow();
+            setTimeout(() => {
+              window.electron.sendLyricToProjector(
+                source,
+                lyrics[lyricsIndex][0],
+                `text-${textStyles.color} text-[${textStyles.fontSize}px] ${textStyles.textAlign} font-bold`
+              );
+            }, 300);
+          }
         }}
       >
         Display
       </button>
 
-      {lyrics.map((lyric) => (
-        <div className="group relative">
-          <pre
-            className="p-2 my-2 rounded text-white text-start group-hover:bg-teal-500/50 cursor-pointer relative z-0 w-full"
-            onClick={() => {
-              window.electron.openProjectorWindow();
-              setTimeout(() => {
-                window.electron.sendLyricToProjector(
-                  source,
-                  lyric,
-                  `text-${textStyles.color} text-[${textStyles.fontSize}px] ${textStyles.textAlign} font-bold`
-                );
-              }, 300);
-            }}
-            dangerouslySetInnerHTML={{
-              __html: lyric.replace(/\s+/g, " ") ?? "",
-            }}
-          />
-          <button
-            className="absolute top-0 right-0 bg-white z-20 rounded-full group-hover:block hidden cursor-pointer"
-            onClick={() => setLyrics((prev) => prev.filter((l) => l !== lyric))}
-          >
-            <IoClose />
-          </button>
-        </div>
-      ))}
+      {lyrics.length > 0 &&
+        lyrics[lyricsIndex].map((lyric) => (
+          <div className="group relative">
+            <pre
+              className="p-2 my-2 rounded text-white text-start group-hover:bg-teal-500/50 cursor-pointer relative z-0 w-full"
+              onClick={() => {
+                window.electron.openProjectorWindow();
+                setTimeout(() => {
+                  window.electron.sendLyricToProjector(
+                    source,
+                    lyric,
+                    `text-${textStyles.color} text-[${textStyles.fontSize}px] ${textStyles.textAlign} font-bold`
+                  );
+                }, 300);
+              }}
+              dangerouslySetInnerHTML={{
+                __html: lyric.replace(/\s+/g, " ") ?? "",
+              }}
+            />
+            <button
+              className="absolute top-0 right-0 bg-white z-20 rounded-full group-hover:block hidden cursor-pointer"
+              onClick={() => {
+                const prev = lyrics[lyricsIndex];
+                prev.splice(prev.indexOf(lyric), 1);
+                if (prev.length === 0) {
+                  lyrics.splice(lyrics.indexOf(prev), 1);
+                } else {
+                  lyrics[lyricsIndex] = prev;
+                }
+                setLyrics(lyrics);
+              }}
+            >
+              <IoClose />
+            </button>
+          </div>
+        ))}
     </section>
   );
 };

@@ -17,12 +17,16 @@ export const defaultTextStyles: TextStyles = {
 
 export const useContentStore = create<{
   textStyles: TextStyles;
+  lyrics: string[][];
   setTextStyles: (textStyles: TextStyles) => void;
+  setLyrics: (lyrics: string[][]) => void;
 }>()(
   persist(
     (set) => ({
       textStyles: defaultTextStyles,
+      lyrics: [[]],
       setTextStyles: (styles) => set({ textStyles: styles }),
+      setLyrics: (lyrics) => set({ lyrics }),
     }),
     {
       name: "media-store",
