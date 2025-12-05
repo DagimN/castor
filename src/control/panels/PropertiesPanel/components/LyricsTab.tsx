@@ -6,6 +6,7 @@ import { IoClose } from "react-icons/io5";
 import { ClipLoader } from "react-spinners";
 import { useContentStore } from "../../../../stores";
 import TextStyleControl from "./TextStyleControl";
+import { IoIosAdd } from "react-icons/io";
 
 const LyricsTab = () => {
   const { files } = useMediaStore();
@@ -135,7 +136,9 @@ const LyricsTab = () => {
             setLyrics(lyrics);
             setLyricsIndex(lyrics.length - 1);
           }}
-        ></h1>
+        >
+          <IoIosAdd />
+        </h1>
       </nav>
       <h1 className="text-teal-500 font-bold">Select Background Image:</h1>
       <select
