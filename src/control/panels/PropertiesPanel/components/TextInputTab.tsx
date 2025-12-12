@@ -57,9 +57,9 @@ const TextInputTab = () => {
         onClick={() => {
           window.electron.openProjectorWindow();
           setTimeout(() => {
-            window.electron.sendMediaToProjector(
+            window.electron.sendLyricToProjector(
               source,
-              text,
+              (text ?? "").trim().replaceAll("\n", "<br />"),
               `text-${textStyles.color} text-[${textStyles.fontSize}px] ${textStyles.textAlign} font-bold`
             );
           }, 300);
