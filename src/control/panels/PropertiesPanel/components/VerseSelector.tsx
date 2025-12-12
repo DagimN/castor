@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { nasv, nasb, am54 } from "../../../../assets/data";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { useMediaStore } from "../../../../stores";
@@ -17,6 +17,46 @@ const VerseSelector = () => {
   const [bookIndex, setBookIndex] = useState(0);
   const [chapterIndex, setChapterIndex] = useState(0);
   const [verseIndex, setVerseIndex] = useState(0);
+  const [hoveredVerse, setHoveredVerse] = useState<number | null>(null);
+  const hoverTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const verseNavRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (verseNavRef.current) {
+      const selectedButton = verseNavRef.current.querySelector(
+        `#verse-button-${verseIndex}`
+      );
+      if (selectedButton) {
+        selectedButton.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "center",
+        });
+      }
+    }
+  }, [verseIndex, chapterIndex]); // Rerun when chapter changes too
+
+  const handleVerseHover = (index: number) => {
+    if (hoverTimerRef.current) {
+      clearTimeout(hoverTimerRef.current);
+    }
+    hoverTimerRef.current = setTimeout(() => {
+      setHoveredVerse(index);
+    }, 1000);
+  };
+
+  const handleMouseLeave = () => {
+    if (hoverTimerRef.current) {
+      clearTimeout(hoverTimerRef.current);
+    }
+    setHoveredVerse(null);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+    };
+  }, []);
 
   const translations = {
     NASV: nasv,
@@ -81,7 +121,7 @@ const VerseSelector = () => {
           ))}
         </select>
         <select
-          name="chapter"
+          name="verse"
           className="text-teal-500"
           onChange={(e) => {
             setVerseIndex(Number(e.target.value));
@@ -94,6 +134,35 @@ const VerseSelector = () => {
             </option>
           ))}
         </select>
+      </nav>
+      <nav ref={verseNavRef} className="flex gap-4 overflow-x-auto w-full p-2">
+        {bible[bookIndex].chapters[chapterIndex].map((verse, index) => (
+          <div
+            key={`verse-container-${index}`}
+            onMouseEnter={() => handleVerseHover(index)}
+            onMouseLeave={handleMouseLeave}
+          >
+            <button
+              id={`verse-button-${index}`}
+              onClick={() => {
+                setVerseIndex(index);
+                window.electron.sendMediaToProjector(
+                  source,
+                  `"${bible[bookIndex].chapters[chapterIndex][index]}" ${bible[bookIndex].abbrev} ${chapterIndex + 1}:${index + 1}`,
+                  `text-${textStyles.color} text-[${textStyles.fontSize}px] ${textStyles.textAlign} font-bold`
+                );
+              }}
+              className={`px-3 py-1 text-sm ${index === verseIndex ? "bg-teal-400" : "border border-teal-400 text-teal-400"} rounded-lg cursor-pointer`}
+            >
+              {index + 1}
+            </button>
+            {hoveredVerse === index && (
+              <div className="fixed mb-2 w-64 p-2 bg-gray-800 text-white text-xs rounded-md shadow-lg z-50 top-10 right-10">
+                {verse}
+              </div>
+            )}
+          </div>
+        ))}
       </nav>
       <aside className="flex gap-4 justify-end my-5">
         <button
@@ -135,7 +204,7 @@ const VerseSelector = () => {
       <h1 className="mt-10 text-white text-center font-[noto]">
         "{bible[bookIndex].chapters[chapterIndex][verseIndex]}"
       </h1>
-      <TextStyleControl /> 
+      <TextStyleControl />
       <h1 className="mt-20 text-teal-500 font-bold">
         Select Background Image:
       </h1>
