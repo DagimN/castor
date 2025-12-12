@@ -5,6 +5,7 @@ import {
   dialog,
   screen,
   globalShortcut,
+  Menu,
 } from "electron";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -89,6 +90,7 @@ const createWindow = () => {
 
   mainWindow.maximize();
   autoUpdater.checkForUpdatesAndNotify();
+  appendHelpMenuItems();
 
   mainWindow.on("close", (event) => {
     projectorWindow?.destroy();
@@ -180,9 +182,9 @@ autoUpdater.on("update-available", () => {
   });
 });
 
-autoUpdater.on('download-progress', (progressObj) => {
+autoUpdater.on("download-progress", (progressObj) => {
   const percent = Math.round(progressObj.percent);
-  mainWindow.webContents.send('download_progress', percent);
+  mainWindow.webContents.send("download_progress", percent);
 });
 
 autoUpdater.on("update-downloaded", () => {
@@ -324,3 +326,54 @@ ipcMain.handle("set-remote-images", (event, imgs) => {
     projectorWindow.webContents.send("media-update", imgs[0]);
   }, 1000);
 });
+
+function appendHelpMenuItems() {
+  // Get existing menu
+  const existingMenu = Menu.getApplicationMenu();
+  if (!existingMenu) return; // when no menu exists yet
+
+  const template = existingMenu.items.map((item) => {
+    return {
+      label: item.label,
+      submenu: item.submenu ? item.submenu.items : undefined,
+    };
+  });
+
+  // Find help menu index
+  const helpIndex = template.findIndex((item) => item.label === "Help");
+
+  if (helpIndex !== -1) {
+    // Append new submenu items
+    template[helpIndex].submenu.push(
+      {
+        label: "Check for Updates",
+        role: "",
+        click: async () => {
+          try {
+            const result = await autoUpdater.checkForUpdatesAndNotify();
+
+            if (result == null) return;
+
+            if (!result.isUpdateAvailable) {
+              dialog.showMessageBox({
+                type: "info",
+                title: "No Updates Available",
+                message: "No updates are available.",
+              });
+            }
+          } catch (error) {
+            console.error(error);
+          }
+        },
+      },
+      {
+        label: `Version (${app.getVersion()})`,
+        enabled: false, // Makes it non-clickable
+      }
+    );
+  }
+
+  // Rebuild menu
+  const newMenu = Menu.buildFromTemplate(template);
+  Menu.setApplicationMenu(newMenu);
+}
