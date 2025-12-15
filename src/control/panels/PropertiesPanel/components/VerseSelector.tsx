@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { nasv, nasb, am54 } from "../../../../assets/data";
+import { nasv, am54 } from "../../../../assets/data";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { useMediaStore } from "../../../../stores";
 import { getMimeType } from "../../../utils/file_functions";
@@ -10,9 +10,7 @@ const VerseSelector = () => {
   const { files } = useMediaStore();
   const { textStyles } = useContentStore();
   const [source, setSource] = useState<string | undefined>();
-  const [translation, setTranslation] = useState<"NASV" | "NASB" | "AM54">(
-    "NASV"
-  );
+  const [translation, setTranslation] = useState<"NASV" | "AM54">("NASV");
   const [backgroundImage, setBackgroundImage] = useState<string | undefined>();
   const [bookIndex, setBookIndex] = useState(0);
   const [chapterIndex, setChapterIndex] = useState(0);
@@ -60,7 +58,6 @@ const VerseSelector = () => {
 
   const translations = {
     NASV: nasv,
-    NASB: nasb,
     AM54: am54,
   };
 
@@ -76,12 +73,9 @@ const VerseSelector = () => {
         name="translation"
         id=""
         className="w-full text-teal-500"
-        onChange={(e) =>
-          setTranslation(e.target.value as "NASV" | "NASB" | "AM54")
-        }
+        onChange={(e) => setTranslation(e.target.value as "NASV" | "AM54")}
       >
         <option value={"NASV"}> NASV </option>
-        <option value={"NASB"}> NASB </option>
         <option value={"AM54"}> AM54 </option>
       </select>
       <nav className="flex gap-4">
@@ -95,11 +89,15 @@ const VerseSelector = () => {
           }}
           value={bookIndex}
         >
-          {bible.map((book, index) => (
-            <option key={book.name} value={index} className="text-black">
-              {book.name}
-            </option>
-          ))}
+          {bible.map((book, index) =>
+            book.name ? (
+              <option key={book.name} value={index} className="text-black">
+                {book.name}
+              </option>
+            ) : (
+              <hr />
+            )
+          )}
         </select>
         <select
           name="chapter"
