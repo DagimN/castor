@@ -178,6 +178,7 @@ const LyricsTab = () => {
         )}
 
         {lyrics.length > 0 &&
+          (lyrics[lyricsIndex] ?? []).length > 0 &&
           lyrics[lyricsIndex].map((lyric) => (
             <div className="group relative">
               <pre
