@@ -189,7 +189,8 @@ const LyricsTab = () => {
                     window.electron.sendLyricToProjector(
                       source,
                       lyric,
-                      `text-${textStyles.color} text-[${textStyles.fontSize}px] ${textStyles.textAlign} font-bold`
+                      `text-[${textStyles.fontSize}px] ${textStyles.textAlign} font-bold`,
+                      textStyles.color
                     );
 
                     if (source?.includes("video")) {
@@ -227,7 +228,8 @@ const LyricsTab = () => {
             window.electron.sendLyricToProjector(
               source,
               "",
-              `text-${textStyles.color} text-[${textStyles.fontSize}px] ${textStyles.textAlign} font-bold`
+              `text-[${textStyles.fontSize}px] ${textStyles.textAlign} font-bold`,
+              textStyles.color
             );
           }}
         >
@@ -243,7 +245,8 @@ const LyricsTab = () => {
                 window.electron.sendLyricToProjector(
                   source,
                   lyrics[lyricsIndex][0],
-                  `text-${textStyles.color} text-[${textStyles.fontSize}px] ${textStyles.textAlign} font-bold`
+                  `text-[${textStyles.fontSize}px] ${textStyles.textAlign} font-bold`,
+                  textStyles.color
                 );
                 window.electron.sendVideoCommand("loop", 1);
               }, 300);

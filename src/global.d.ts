@@ -10,18 +10,30 @@ declare global {
       sendMediaToProjector: (
         base64,
         verse?: string,
-        styles?: string
+        styles?: string,
+        color?: string
       ) => Promise<string>;
       sendLyricToProjector: (
         base64,
         lyric?: string,
-        styles?: string
+        styles?: string,
+        color?: string
       ) => Promise<string>;
       onMediaUpdate: (
-        callback: (newSource: string, verse?: string, styles?: string) => void
+        callback: (
+          newSource: string,
+          verse?: string,
+          styles?: string,
+          color?: string
+        ) => void
       ) => void;
       onLyricUpdate: (
-        callback: (newSource: string, lyric?: string, styles?: string) => void
+        callback: (
+          newSource: string,
+          lyric?: string,
+          styles?: string,
+          color?: string
+        ) => void
       ) => void;
       onSlideUpdate: (callback: (nav: string) => void) => void;
       onSourceIndexUpdate: (callback: (index: number) => void) => void;
@@ -32,7 +44,9 @@ declare global {
         callback: (newSource: string) => void
       ) => void;
       removeSlideUpdateListener: (callback: (nav: string) => void) => void;
-      removeSourceIndexUpdateListener: (callback: (index: number) => void) => void;
+      removeSourceIndexUpdateListener: (
+        callback: (index: number) => void
+      ) => void;
       sendVideoCommand: (command: string, payload?: any) => void;
       onVideoCommand: (
         callback: (args: { command: string; payload: number }) => void

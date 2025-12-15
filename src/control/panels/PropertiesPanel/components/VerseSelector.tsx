@@ -147,7 +147,8 @@ const VerseSelector = () => {
                 window.electron.sendMediaToProjector(
                   source,
                   `"${bible[bookIndex].chapters[chapterIndex][index]}" ${bible[bookIndex].abbrev} ${chapterIndex + 1}:${index + 1}`,
-                  `text-${textStyles.color} text-[${textStyles.fontSize}px] ${textStyles.textAlign} font-bold`
+                  `text-[${textStyles.fontSize}px] ${textStyles.textAlign} font-bold`,
+                  textStyles.color
                 );
               }}
               className={`px-3 py-1 text-sm ${index === verseIndex ? "bg-teal-400" : "border border-teal-400 text-teal-400"} rounded-lg cursor-pointer`}
@@ -172,7 +173,8 @@ const VerseSelector = () => {
               window.electron.sendMediaToProjector(
                 source,
                 `"${bible[bookIndex].chapters[chapterIndex][updatedIndex]}" ${bible[bookIndex].abbrev} ${chapterIndex + 1}:${updatedIndex + 1}`,
-                `text-${textStyles.color} text-[${textStyles.fontSize}px] ${textStyles.textAlign} font-bold`
+                `text-[${textStyles.fontSize}px] ${textStyles.textAlign} font-bold`,
+                textStyles.color
               );
             }
           }}
@@ -191,7 +193,8 @@ const VerseSelector = () => {
               window.electron.sendMediaToProjector(
                 source,
                 `"${bible[bookIndex].chapters[chapterIndex][updatedIndex]}" ${bible[bookIndex].abbrev} ${chapterIndex + 1}:${updatedIndex + 1}`,
-                `text-${textStyles.color} text-[${textStyles.fontSize}px] ${textStyles.textAlign} font-bold`
+                `text-[${textStyles.fontSize}px] ${textStyles.textAlign} font-bold`,
+                textStyles.color
               );
             }
           }}
@@ -241,7 +244,8 @@ const VerseSelector = () => {
             window.electron.sendMediaToProjector(
               source,
               `"${bible[bookIndex].chapters[chapterIndex][verseIndex]}" ${bible[bookIndex].abbrev} ${chapterIndex + 1}:${verseIndex + 1}`,
-              `text-${textStyles.color} text-[${textStyles.fontSize}px] ${textStyles.textAlign} font-bold`
+              `text-[${textStyles.fontSize}px] ${textStyles.textAlign} font-bold`,
+              textStyles.color
             );
           }, 300);
         }}

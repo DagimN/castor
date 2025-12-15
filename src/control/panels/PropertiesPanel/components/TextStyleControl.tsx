@@ -6,6 +6,16 @@ const TextStyleControl = () => {
 
   return (
     <nav className="flex gap-4 justify-center items-center my-4">
+      <input
+        type="color"
+        value={textStyles.color}
+        onChange={(e) =>
+          setTextStyles({
+            ...textStyles,
+            color: e.target.value,
+          })
+        }
+      />
       <select
         name="fontSize"
         id=""

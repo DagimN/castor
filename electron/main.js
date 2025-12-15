@@ -265,12 +265,24 @@ ipcMain.handle("fetch-video-metadata", async (_event, filePath) => {
   });
 });
 
-ipcMain.on("media-update", (_, newSource, verse, styles) => {
-  projectorWindow?.webContents.send("media-update", newSource, verse, styles);
+ipcMain.on("media-update", (_, newSource, verse, styles, color) => {
+  projectorWindow?.webContents.send(
+    "media-update",
+    newSource,
+    verse,
+    styles,
+    color
+  );
 });
 
-ipcMain.on("lyric-update", (_, newSource, verse, styles) => {
-  projectorWindow?.webContents.send("lyric-update", newSource, verse, styles);
+ipcMain.on("lyric-update", (_, newSource, verse, styles, color) => {
+  projectorWindow?.webContents.send(
+    "lyric-update",
+    newSource,
+    verse,
+    styles,
+    color
+  );
 });
 
 ipcMain.on("open-projector-window", () => {

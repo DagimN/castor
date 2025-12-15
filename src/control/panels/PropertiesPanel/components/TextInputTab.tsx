@@ -60,7 +60,8 @@ const TextInputTab = () => {
             window.electron.sendLyricToProjector(
               source,
               (text ?? "").trim().replaceAll("\n", "<br />"),
-              `text-${textStyles.color} text-[${textStyles.fontSize}px] ${textStyles.textAlign} font-bold`
+              `text-[${textStyles.fontSize}px] ${textStyles.textAlign} font-bold`,
+              textStyles.color
             );
           }, 300);
         }}

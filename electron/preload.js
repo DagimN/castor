@@ -6,19 +6,19 @@ contextBridge.exposeInMainWorld("electron", {
   loadFile: (filePath) => ipcRenderer.invoke("load-file", filePath),
   openProjectorWindow: () => ipcRenderer.send("open-projector-window"),
   closeProjectorWindow: () => ipcRenderer.send("close-projector-window"),
-  sendMediaToProjector: (base64, verse, styles) => {
-    ipcRenderer.send("media-update", base64, verse, styles);
+  sendMediaToProjector: (base64, verse, styles, color) => {
+    ipcRenderer.send("media-update", base64, verse, styles, color);
   },
-  sendLyricToProjector: (base64, lyric, styles) => {
-    ipcRenderer.send("lyric-update", base64, lyric, styles);
+  sendLyricToProjector: (base64, lyric, styles, color) => {
+    ipcRenderer.send("lyric-update", base64, lyric, styles, color);
   },
   onMediaUpdate: (callback) =>
-    ipcRenderer.on("media-update", (_, newSource, verse, styles) => {
-      callback(newSource, verse, styles);
+    ipcRenderer.on("media-update", (_, newSource, verse, styles, color) => {
+      callback(newSource, verse, styles, color);
     }),
   onLyricUpdate: (callback) =>
-    ipcRenderer.on("lyric-update", (_, newSource, lyric, styles) => {
-      callback(newSource, lyric, styles);
+    ipcRenderer.on("lyric-update", (_, newSource, lyric, styles, color) => {
+      callback(newSource, lyric, styles, color);
     }),
   onSlideUpdate: (callback) => {
     ipcRenderer.removeAllListeners("slide-update");
@@ -42,7 +42,7 @@ contextBridge.exposeInMainWorld("electron", {
     ipcRenderer.removeListener("slide-update", callback);
   },
   removeSourceIndexUpdateListener: (callback) => {
-    ipcRenderer.removeListener("source-index-update", callback)
+    ipcRenderer.removeListener("source-index-update", callback);
   },
   removeVideoCommandListener: (callback) => {
     ipcRenderer.removeListener("video-control", callback);

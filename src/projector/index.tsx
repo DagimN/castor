@@ -5,19 +5,22 @@ const Projector = () => {
   const [verse, setVerse] = useState<string | undefined>();
   const [lyric, setLyric] = useState<string | undefined>();
   const [isLooped, setIsLooped] = useState(false);
+  const [color, setColor] = useState<string>("#ffffff");
   const [textStyles, setTextStyles] = useState<string | undefined>(
-    "text-white text-[56px] text-center font-bold"
+    "text-[56px] text-center font-bold"
   );
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const handleUpdate = (
     newSource: string,
     newVerse?: string,
-    styles?: string
+    styles?: string,
+    color?: string
   ) => {
     setSource(newSource);
     setVerse(newVerse);
     setLyric(undefined);
+    setColor(color ?? "#ffffff");
 
     if (styles) {
       setTextStyles(styles);
@@ -36,11 +39,14 @@ const Projector = () => {
     const handleUpdate = (
       newSource: string,
       newLyric?: string,
-      styles?: string
+      styles?: string,
+      color?: string
     ) => {
       setSource(newSource);
       setLyric(newLyric);
       setVerse(undefined);
+      setColor(color ?? "#ffffff");
+      console.log(color);
 
       if (styles) {
         setTextStyles(styles);
@@ -118,12 +124,22 @@ const Projector = () => {
         />
       )}
       {verse && (
-        <h1 className={`absolute z-20 w-[70%] ${textStyles}`}>{verse}</h1>
+        <h1
+          className={`absolute z-20 w-[70%] ${textStyles}`}
+          style={{
+            color: color,
+          }}
+        >
+          {verse}
+        </h1>
       )}
 
       {lyric && (
         <pre
           className={`absolute z-20 w-[70%] ${textStyles}`}
+          style={{
+            color: color,
+          }}
           dangerouslySetInnerHTML={{
             __html: lyric?.replace(/\s+/g, " ") ?? "",
           }}

@@ -9,7 +9,7 @@ export type TextStyles = {
 };
 
 export const defaultTextStyles: TextStyles = {
-  color: "white",
+  color: "#ffffff",
   fontSize: 56,
   textAlign: "text-center",
   fontWeight: "bold",
