@@ -191,6 +191,10 @@ const LyricsTab = () => {
                       lyric,
                       `text-${textStyles.color} text-[${textStyles.fontSize}px] ${textStyles.textAlign} font-bold`
                     );
+
+                    if (source?.includes("video")) {
+                      window.electron.sendVideoCommand("loop", 1);
+                    }
                   }, 300);
                 }}
                 dangerouslySetInnerHTML={{
