@@ -26,7 +26,7 @@ const LyricsTab = () => {
     setIsFetching(false);
 
     if (firstData.length > 0) {
-      const lyrics = firstData[0]
+      const data = firstData[0]
         .split("<br>\n<br>")
         .map((lyric: string) =>
           lyric
@@ -36,7 +36,10 @@ const LyricsTab = () => {
             )
             .replaceAll("</span>", "")
         );
+
+      lyrics.push(data);
       setLyrics(lyrics);
+      setLyricsIndex(lyrics.length - 1);
       return;
     }
 
