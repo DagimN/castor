@@ -25,6 +25,7 @@ const server = express();
 
 let projectorWindow = undefined;
 let mainWindow = undefined;
+let tutorialWindow = undefined;
 let selectedIndex = 0;
 let images = [];
 
@@ -134,6 +135,38 @@ const createProjectorWindow = () => {
       projectorWindow = undefined;
     });
   }
+};
+
+const createTutorialWindow = () => {
+  if (tutorialWindow) {
+    tutorialWindow.focus();
+    return;
+  }
+  // Create the browser window.
+  tutorialWindow = new BrowserWindow({
+    height: 600,
+    width: 800,
+    icon: "./public/logo-mini.png",
+    webPreferences: {
+      preload: path.join(__dirname, "preload.js"),
+      contextIsolation: true,
+    },
+  });
+
+  if (app.isPackaged) {
+    tutorialWindow.loadFile(path.join(__dirname, "../dist/index.html"), {
+      hash: "/tutorial",
+    });
+  } else {
+    tutorialWindow.loadURL("http://localhost:5173/tutorial");
+  }
+
+  tutorialWindow.setMenu(null);
+  tutorialWindow.setMaximizable(false);
+
+  tutorialWindow.on("close", (event) => {
+    tutorialWindow = undefined;
+  });
 };
 
 // This method will be called when Electron has finished
@@ -356,7 +389,14 @@ function appendHelpMenuItems() {
 
   if (helpIndex !== -1) {
     // Append new submenu items
+    template[helpIndex].submenu = [];
     template[helpIndex].submenu.push(
+      {
+        label: "Tutorial",
+        click: () => {
+          createTutorialWindow();
+        },
+      },
       {
         label: "Check for Updates",
         role: "",
