@@ -6,6 +6,7 @@ import {
   screen,
   globalShortcut,
   Menu,
+  shell,
 } from "electron";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -166,6 +167,17 @@ const createTutorialWindow = () => {
 
   tutorialWindow.on("close", (event) => {
     tutorialWindow = undefined;
+  });
+
+  tutorialWindow.webContents.setWindowOpenHandler((details) => {
+    // Check if the URL is a web link (http or https)
+    if (details.url.startsWith("https:") || details.url.startsWith("http:")) {
+      // Open the URL in the OS default browser
+      shell.openExternal(details.url);
+    }
+
+    // 'deny' prevents Electron from creating a new internal window
+    return { action: "deny" };
   });
 };
 

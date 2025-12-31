@@ -7,6 +7,10 @@ body {
   background-color: #101828;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 @font-face {
   font-family: "Nokia";
   src: url("../assets/fonts/Nokia/NokiaKokia.ttf") format("truetype");

@@ -1,5 +1,3 @@
-import React from "react";
-
 const TutorialFlow = () => {
   return <div>Tutorial Flow</div>;
 };

@@ -7,7 +7,7 @@ const TutorialWindow = () => {
   const version = (packageJson as any)?.version ?? "";
   const [activePanel, setActivePanel] = useState<
     "browse" | "tutorial" | undefined
-  >();
+  >("browse");
 
   return (
     <main className="relative h-screen w-screen">
@@ -25,15 +25,15 @@ const TutorialWindow = () => {
 
           <div className="flex gap-3 sm:gap-10 h-10 text-sm">
             <button
-              className="font-bold text-teal-400 cursor-pointer"
+              className="font-bold text-teal-400 cursor-pointer hover:bg-gray-800 px-4 rounded-xl"
               onClick={() => {
                 setActivePanel("browse");
               }}
             >
-              Browse
+              Browse Content
             </button>
             <button
-              className="font-bold bg-teal-400 rounded-xl px-4 cursor-pointer"
+              className="font-bold bg-teal-400 rounded-xl px-4 cursor-pointer hover:bg-teal-500"
               onClick={() => {
                 setActivePanel("tutorial");
               }}
