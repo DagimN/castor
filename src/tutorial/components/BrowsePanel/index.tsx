@@ -2,19 +2,21 @@ import { useState } from "react";
 import { IoMdMenu } from "react-icons/io";
 import { GoFileDirectoryFill } from "react-icons/go";
 import { RiProjector2Fill } from "react-icons/ri";
-import { MdSettingsRemote } from "react-icons/md";
+import { MdOutlineSystemUpdateAlt, MdSettingsRemote } from "react-icons/md";
 import { HiMiniDocumentText } from "react-icons/hi2";
 import {
   NoContent,
   FilesContent,
   ProjectorContent,
   TextContent,
+  UpdatesContent,
+  RemoteContent,
 } from "./content";
 
 const BrowsePanel = () => {
   const [isExpanded, setIsExpanded] = useState(true);
   const [menu, setMenu] = useState<
-    "files" | "projector" | "remote" | "content" | undefined
+    "files" | "projector" | "remote" | "content" | "updates" | undefined
   >();
 
   const handleScroll = (
@@ -32,7 +34,8 @@ const BrowsePanel = () => {
     files: <FilesContent />,
     projector: <ProjectorContent />,
     content: <TextContent />,
-    remote: <NoContent />,
+    remote: <RemoteContent />,
+    updates: <UpdatesContent />,
   };
 
   return (
@@ -124,6 +127,13 @@ const BrowsePanel = () => {
           >
             <MdSettingsRemote className="mr-3" size={20} />
             {isExpanded && <h1>Remote Controls</h1>}
+          </li>
+          <li
+            className={`flex items-center gap-2 ${menu === "updates" ? "text-teal-400 font-bold" : "hover:text-gray-400 cursor-pointer"}`}
+            onClick={() => setMenu("updates")}
+          >
+            <MdOutlineSystemUpdateAlt className="mr-3" size={20} />
+            {isExpanded && <h1>Updates</h1>}
           </li>
         </ul>
       </aside>

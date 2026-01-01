@@ -38,7 +38,8 @@ const TextContent = () => {
 
       <p>
         You need to select a background file from the "Files" section to be used
-        as the background for the verses.
+        as the background for the verses. After selecting, press the{" "}
+        <strong>Display</strong> button to project the verses.
       </p>
 
       <h2 id="lyrics" className="text-teal-400 mt-4">
@@ -108,12 +109,25 @@ const TextContent = () => {
         pages.
       </p>
 
+      <img
+        src="tutorial/lyrics-controls.png"
+        alt=""
+        className="relative left-1/2 -translate-x-1/2 h-[500px]"
+      />
+      <p>
+        The lyrics panel has two controls which are the reset and display.{" "}
+        <br /> <strong>Reset</strong> for clearing the text from being
+        projected. <br /> <strong>Display</strong> for displaying the first
+        lyrics text .{" "}
+      </p>
+
       <h2 id="text" className="text-teal-400 mt-4">
         Text Input
       </h2>
       <p>
         Edit raw text for displaying short notes and or anything that is
-        required for the scenario.
+        required for the scenario. After selecting, press the{" "}
+        <strong>Display</strong> button to project the text.
       </p>
     </section>
   );
